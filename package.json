@@ -1,0 +1,10 @@
+{
+  "name": "webmaker-suite",
+  "version": "0.0.1",
+  "dependencies": {
+    "argv": "0.0.2",
+    "habitat": "0.4.2",
+    "prompt": "0.2.11"
+  },
+  "devDependencies": {}
+}
