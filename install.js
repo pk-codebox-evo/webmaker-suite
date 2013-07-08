@@ -38,11 +38,11 @@ function runInstaller(runtime) {
       username,
       password
       gitCredentials = (function(options) {
-        if(!options)
+        if (!options)
           return '';
         username = options.get("username"),
         password = options.get("password");
-        if(!username || !password)
+        if (!username || !password)
           return '';
         return username + ":" + password + "@";
       }(gitOptions));
@@ -64,13 +64,16 @@ function runInstaller(runtime) {
    * Set up the environment for specific repositories
    */
   function setupEnvironment(repositories, next) {
-    if(repositories.length === 0) {
+    if (repositories.length === 0) {
       return setTimeout(next, 10);
     };
-    var repo = repositories.pop();
-    console.log("setting up .env file for "+repo);
+    var repo = repositories.pop(),
+        cmd = masterRepoList[repo];
+    if (cmd.length > 0) {
+      console.log("setting up .env file for "+repo);
+    }
     process.chdir(repo);
-    batchExec(masterRepoList[repo], function() {
+    batchExec(cmd, function() {
       process.chdir("..");
       setupEnvironment(repositories, next);
     });
@@ -92,7 +95,7 @@ function runInstaller(runtime) {
    * Run npm install + npm cache clean for a repository.
    */
   function installModule(repositories, next) {
-    if(repositories.length === 0) {
+    if (repositories.length === 0) {
       return setTimeout(next, 10);
     };
     var repo = repositories.pop();
@@ -194,7 +197,7 @@ function getRunTime() {
       var runtime = getRunTime();
 
       // do we need an .env file?
-      if(!fs.existsSync(".env")) {
+      if (!fs.existsSync(".env")) {
         console.log("No .env file found.");
 
         /**
@@ -213,7 +216,7 @@ function getRunTime() {
         };
 
         // do we still need a username/password combination for git?
-        if(!runtime.username || !runtime.password) {
+        if (!runtime.username || !runtime.password) {
           var prompt = require("prompt");
           prompt.start();
           prompt.get(['username', 'password'], writeEnv);
