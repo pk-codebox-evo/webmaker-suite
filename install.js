@@ -37,7 +37,7 @@ function runInstaller(runtime) {
       }()),
       gitOptions = new habitat("git"),
       username,
-      password
+      password,
       gitCredentials = (function(options) {
         if (!options)
           return '';
