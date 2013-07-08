@@ -17,7 +17,8 @@
  */
 var batchExec = require("./lib/batch").batchExec,
     checkError = require("./lib/batch").checkError,
-    fs = require("fs");
+    fs = require("fs"),
+    runtime;
 
 /**
  * This function houses all the installer code
@@ -63,14 +64,20 @@ function runInstaller(runtime, npmString) {
       return setTimeout(next, 10);
     };
     var repo = repositories.pop(),
-        cmd = repos[repo].env;
-    if (cmd) {
-      console.log("setting up .env file for "+repo);
-      process.chdir(repo);
-      batchExec([cmd], function() {
-        process.chdir("..");
+        env = repos[repo].env;
+    if (env) {
+      console.log("setting up " + repo + " environment.");
+      if (typeof env === "string") {
+        process.chdir(repo);
+        batchExec([env], function() {
+          process.chdir("..");
+          setupEnvironment(repositories, next);
+        });
+      }
+      else if (typeof env === "function") {
+        env(repo, fs, habitat);
         setupEnvironment(repositories, next);
-      });
+      }
     } else { setupEnvironment(repositories, next); }
   }
 
@@ -83,6 +90,7 @@ function runInstaller(runtime, npmString) {
     console.log();
     setupEnvironment(repositories = Object.keys(repos), function() {
       console.log("\nInstallation complete.");
+      process.exit(0);
     });
   };
 
@@ -108,10 +116,14 @@ function runInstaller(runtime, npmString) {
    * Run npm install + npm cache clean for all repositories.
    */
   function installModules() {
-    console.log();
-    installModule(repositories = Object.keys(repos), function() {
+    if(runtime.skipnpm) {
       setupEnvironments();
-    });
+    } else {
+      console.log();
+      installModule(repositories = Object.keys(repos), function() {
+        setupEnvironments();
+      });
+    }
   }
 
   /**
@@ -131,17 +143,20 @@ function runInstaller(runtime, npmString) {
       var repo = repositories.pop(),
           repoURL = "https://" + gitCredentials + "github.com/mozilla/" + repo + ".git",
           rm = "rm -rf " + repo,
-          clone = "git clone " + repoURL;
-      console.log("\ncloning " + repo);
-      batchExec([rm, clone], function(error, stdout, stderr) {
+          clone = "git clone " + repoURL,
+          commands = (runtime.skipclone ? [] : [rm, clone]);
+      if(!runtime.skipclone) {
+        console.log("\ncloning " + repo);
+      }
+      batchExec(commands, function(error, stdout, stderr) {
         checkError(error, stdout, stderr);
 
         process.chdir(repo);
-        var commands = [
+        var commands = (runtime.skipclone ? [] : [
           "git submodule update --init --recursive",
           "git remote rename origin mozilla",
           "git remote add origin ssh://git@github.com/" + username + "/" + repo + ".git",
-        ];
+        ]);
         batchExec(commands, function() {
           process.chdir("..");
           tryNext();
@@ -173,6 +188,30 @@ function getRunTime() {
       description: 'Password for git',
       example: "'node install --username=username --password=password'"
   });
+  argv.option({
+      name: 's3key',
+      type: 'string',
+      description: 'API key for Amazon Web Services\' S3',
+      example: "'node install --s3key=abcdefg'"
+  });
+  argv.option({
+      name: 's3secret',
+      type: 'string',
+      description: 'Secret key for Amazon Web Services\' S3',
+      example: "'node install --s3key=abcdefg --s3secret=123456'"
+  });
+  argv.option({
+      name: 'skipclone',
+      type: 'string',
+      description: 'Skip all \'git clone\' steps',
+      example: "'node install --skipclone'"
+  });
+  argv.option({
+      name: 'skipnpm',
+      type: 'string',
+      description: 'Skip all \'npm install\' and \'npm cache clean\' steps',
+      example: "'node install --skipnpm'"
+  });
   return argv.run().options;
 }
 
@@ -182,51 +221,55 @@ function getRunTime() {
 (function bootStrap(){
   console.log("Bootstrapping installer...");
   var npmString = require("./lib/npmstring");
-  batchExec(
-    [ "rm -rf node_modules",
-      npmString + " install",
-      npmString + " cache clean" ],
-    function() {
-      var runtime = getRunTime();
+  var commands = (process.argv.indexOf("--skipnpm") > -1 ? [] : [
+    "rm -rf node_modules",
+    npmString + " install",
+    npmString + " cache clean"
+  ]);
+  batchExec(commands, function() {
+    runtime = getRunTime();
 
-      // do we need an .env file?
-      if (!fs.existsSync(".env")) {
-        console.log("No .env file found.");
+    // do we need an .env file?
+    if (!fs.existsSync(".env")) {
+      console.log("No .env file found.");
 
-        /**
-         * This funcitons writes the installer's .env file
-         */
-        var writeEnv = function (err, result) {
-          if (err) { return onErr(err); }
-          // write local .env
-          var content = [
-            'export GIT_USERNAME="' + result.username + '"',
-            'export GIT_PASSWORD="' + result.password + '"',
-            ''].join("\n");
-          fs.writeFileSync(".env", content);
-          console.log(".env file created.");
-          runInstaller(runtime, npmString);
-        };
+      /**
+       * This funcitons writes the installer's .env file
+       */
+      var writeEnv = function (err, result) {
+        if (err) { return onErr(err); }
+        // write local .env
+        var content = [
+          'export GIT_USERNAME="' + result.username + '"',
+          'export GIT_PASSWORD="' + result.password + '"',
+          'export S3_KEY="'       + result.s3key    + '"',
+          'export S3_SECRET="'    + result.s3secret + '"',
+          ''].join("\n");
+        fs.writeFileSync(".env", content);
+        console.log(".env file created.");
+        runInstaller(runtime, npmString);
+      };
 
-        // do we still need a username/password combination for git?
-        if (!runtime.username || !runtime.password) {
-          console.log("Please specify your git credentials:");
-          var prompt = require("prompt");
-          prompt.start();
-          prompt.get(['username', 'password'], writeEnv);
-        }
-
-        // we got the user/pass information from the runtime arguments
-        else {
-          writeEnv(null, {
-            username: runtime.username,
-            password: runtime.password
-          });
-        }
+      // do we still need git username/password and s3 key/secret combinations?
+      if (!runtime.username || !runtime.password || !runtime.s3key || !runtime.s3secret) {
+        console.log("Please specify your git and AWS credentials:");
+        var prompt = require("prompt");
+        prompt.start();
+        prompt.get(['username', 'password', 's3key', 's3secret'], writeEnv);
       }
 
-      // we already had an .env file
-      else { runInstaller(runtime, npmString); }
+      // we got the user/pass information from the runtime arguments
+      else {
+        writeEnv(null, {
+          username: runtime.username,
+          password: runtime.password,
+          s3key: runtime.s3key,
+          s3secret: runtime.s3secret
+        });
+      }
     }
-  );
+
+    // we already had an .env file
+    else { runInstaller(runtime, npmString); }
+  });
 }());
