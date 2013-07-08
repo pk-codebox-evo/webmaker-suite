@@ -17,8 +17,8 @@ function run() {
       var sp = spawn(cmd, args);
       process.chdir("..");
       app.process = sp;
-      sp.stdout.on('data', function (data) { console.log("[" + appName + "] " + data); });
-      sp.stderr.on('data', function (data) { console.log("[" + appName + "] " + data); });
+      sp.stdout.on('data', function (data) { process.stdout.write("[" + appName + "] " + data); });
+      sp.stderr.on('data', function (data) { process.stderr.write("[" + appName + "] " + data); });
       sp.on('error', function () {
         console.log("[" + appName + "]" + error, arguments);
         sp.kill();
@@ -37,30 +37,39 @@ function run() {
  * Mongo DB
  */
 function spawnMongo() {
-  // ensure we have a data directory for mongo
-  if(!fs.existsSync("./mongo")) { fs.mkdirSync("mongo"); }
+  if (process.platform === "win32") {
+    // ensure we have a data directory for mongo
+    if(!fs.existsSync("./mongo")) { fs.mkdirSync("mongo"); }
 
-  // set up database
-  var mongo = spawn("mongod", ["--dbpath","./mongo/"]),
-      appName = "mongodb";
-  mongo.stdout.on('data', function (data) {
-    process.stdout.write("[" + appName + "] " + data);
-    // don't start the Webmaker Suite until ES and Mongo have started up.
-    if(data.toString().indexOf("waiting for connections")>-1) {
-      setTimeout(run, 1000);
-    }
-  });
-  mongo.stderr.on('data', function (data) { process.stderr.write("[" + appName + "] " + data); });
-  mongo.on('error', function () { console.log("[" + appName + "] ERROR", arguments); mongo.kill(); });
-  mongo.on('close', function (code) { console.log(appName + ' process exited with code ' + code); });
+    // set up database
+    var mongo = spawn("mongod", ["--dbpath","./mongo/", "-v"]),
+        appName = "mongodb";
+    mongo.stdout.on('data', function (data) {
+      process.stdout.write("[" + appName + "] " + data);
+      // don't start the Webmaker Suite until ES and Mongo have started up.
+      if(data.toString().indexOf("waiting for connections")>-1) {
+        setTimeout(run, 1000);
+      }
+    });
+    mongo.stderr.on('data', function (data) { process.stderr.write("[" + appName + "] " + data); });
+    mongo.on('error', function () { console.log("[" + appName + "] ERROR", arguments); mongo.kill(); });
+    mongo.on('close', function (code) { console.log(appName + ' process exited with code ' + code); });
+  }
+
+  else { run(); }
 };
 
 /**
  * Elastic Search
  */
 (function spawnElasticSearch() {
-  var es = spawn("elasticsearch" + (process.platform === "win32" ? ".bat" : '')),
-      appName = "elasticsearch";
+  var appName = "elasticsearch",
+      es;
+  if (process.platform == "win32") {
+    es = spawn("elasticsearch.bat");
+  } else {
+    es = spawn("elasticsearch", ["-f", "-D", "es.config=/usr/local/opt/elasticsearch/config/elasticsearch.yml"]);
+  }
   es.stdout.on('data', function (data) {
     process.stdout.write("[" + appName + "] " + data);
     // don't start Mongo until ES has started up.
