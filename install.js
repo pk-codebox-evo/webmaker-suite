@@ -2,12 +2,13 @@
  *
  * This is the installer for the Webmaker suite of projects.
  *
- * Run "npm install", followed by "node install", and you
- * should be set.
+ * Run "node install", and you should be set.
  *
  * Use "node update" to bump every project to latest master.
+ * (note:  not implemented yet)
  *
  * Use "node run" to fire up every project for testing.
+ * (note:  not implemented yet)
  *
  ****/
 
