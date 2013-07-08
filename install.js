@@ -49,6 +49,9 @@ function runInstaller(runtime) {
       }(gitOptions));
 
   // Our list of apps that belong to the Webmaker Suite
+  // This list will become a middleware list instead, so
+  // that it's easier to manipulate, and easier to require
+  // in other apps (like for "node run").
   var masterRepoList = {
         "htmlsanitizer.org": [],
         "thimble.webmaker.org": ["cp env.dist .env"],
@@ -218,6 +221,7 @@ function getRunTime() {
 
         // do we still need a username/password combination for git?
         if (!runtime.username || !runtime.password) {
+          console.log("Please specify your git credentials:");
           var prompt = require("prompt");
           prompt.start();
           prompt.get(['username', 'password'], writeEnv);
