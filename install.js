@@ -22,7 +22,7 @@ var batchExec = require("./lib/batch").batchExec,
 /**
  * This function houses all the installer code
  */
-function runInstaller(runtime) {
+function runInstaller(runtime, npmString) {
   console.log("Finished bootstrapping.");
 
   console.log("\n===================================================================");
@@ -46,23 +46,14 @@ function runInstaller(runtime) {
         if (!username || !password)
           return '';
         return username + ":" + password + "@";
-      }(gitOptions));
+      }(gitOptions)),
+      repos = require("./lib/repos")(npmString);
 
   // Our list of apps that belong to the Webmaker Suite
   // This list will become a middleware list instead, so
   // that it's easier to manipulate, and easier to require
   // in other apps (like for "node run").
-  var masterRepoList = {
-        "htmlsanitizer.org": [],
-        "thimble.webmaker.org": ["cp env.dist .env"],
-        "popcorn.webmaker.org": [],
-        "node-webmaker-loginapi": [],
-        "login.webmaker.org": ["cp env.sample .env"],
-        "webmaker.org": ["cp env.dist .env"],
-        "makeapi-client": [],
-        "MakeAPI": ["cp env.sample .env"]
-      },
-      repositories = Object.keys(masterRepoList);
+  var repositories = Object.keys(repos);
 
   /**
    * Set up the environment for specific repositories
@@ -72,15 +63,15 @@ function runInstaller(runtime) {
       return setTimeout(next, 10);
     };
     var repo = repositories.pop(),
-        cmd = masterRepoList[repo];
-    if (cmd.length > 0) {
+        cmd = repos[repo].env;
+    if (cmd) {
       console.log("setting up .env file for "+repo);
-    }
-    process.chdir(repo);
-    batchExec(cmd, function() {
-      process.chdir("..");
-      setupEnvironment(repositories, next);
-    });
+      process.chdir(repo);
+      batchExec([cmd], function() {
+        process.chdir("..");
+        setupEnvironment(repositories, next);
+      });
+    } else { setupEnvironment(repositories, next); }
   }
 
   /**
@@ -90,7 +81,7 @@ function runInstaller(runtime) {
    */
   function setupEnvironments() {
     console.log();
-    setupEnvironment(repositories = Object.keys(masterRepoList), function() {
+    setupEnvironment(repositories = Object.keys(repos), function() {
       console.log("\nInstallation complete.");
     });
   };
@@ -103,12 +94,9 @@ function runInstaller(runtime) {
       return setTimeout(next, 10);
     };
     var repo = repositories.pop();
-    console.log("resolving node modules for "+repo);
+    console.log("resolving module dependencies for "+repo);
     process.chdir(repo);
-    batchExec(
-      [ "rm -rf node_modules",
-        "npm install",
-        "npm cache clean" ],
+    batchExec(repos[repo].install,
       function() {
         process.chdir("..");
         installModule(repositories, next);
@@ -121,7 +109,7 @@ function runInstaller(runtime) {
    */
   function installModules() {
     console.log();
-    installModule(repositories = Object.keys(masterRepoList), function() {
+    installModule(repositories = Object.keys(repos), function() {
       setupEnvironments();
     });
   }
@@ -193,10 +181,11 @@ function getRunTime() {
  */
 (function bootStrap(){
   console.log("Bootstrapping installer...");
+  var npmString = require("./lib/npmstring");
   batchExec(
     [ "rm -rf node_modules",
-      "npm install",
-      "npm cache clean" ],
+      npmString + " install",
+      npmString + " cache clean" ],
     function() {
       var runtime = getRunTime();
 
@@ -216,7 +205,7 @@ function getRunTime() {
             ''].join("\n");
           fs.writeFileSync(".env", content);
           console.log(".env file created.");
-          runInstaller(runtime);
+          runInstaller(runtime, npmString);
         };
 
         // do we still need a username/password combination for git?
@@ -237,7 +226,7 @@ function getRunTime() {
       }
 
       // we already had an .env file
-      else { runInstaller(runtime); }
+      else { runInstaller(runtime, npmString); }
     }
   );
 }());
