@@ -51,7 +51,7 @@ function runInstaller(runtime) {
   var masterRepoList = {
         "htmlsanitizer.org": [],
         "thimble.webmaker.org": ["cp env.dist .env"],
-        "popcorn.webmaker.org": ["cp env.dist .env"],
+        "popcorn.webmaker.org": [],
         "node-webmaker-loginapi": [],
         "login.webmaker.org": ["cp env.sample .env"],
         "webmaker.org": ["cp env.dist .env"],
