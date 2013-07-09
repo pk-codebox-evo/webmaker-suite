@@ -8,6 +8,8 @@ Step 3: Go make some coffee, this'll run for a while...
 
 After installation completes, the whole suite can be fired up with `node run`. Note that this will pipe all output from everything into the same console, so this is great for not-looking-at-the-terminal testing, but not a good idea for doing single-component terminal debugging.
 
+**NOTE** it looks like login.webmaker.org somehow triggers a "too many files open" error when doing an automated `npm install`. Not sure what causes this (yet) but for the moment you'll have to go into the login.webmaker.org dir and type `npm install` manually.
+
 ## Script options
 
 ### node install
