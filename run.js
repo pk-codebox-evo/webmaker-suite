@@ -29,9 +29,10 @@ var fs = require("fs"),
     spawn = require("child_process").spawn;
 
 function run() {
+  var i = 1;
   Object.keys(repos).forEach(function (appName) {
     var app = repos[appName];
-    if (app.run) {
+    if (app.run && !app.process) {
       var args = app.run.split(' ');
       cmd = args.splice(0,1)[0];
       console.log("> "+app.run + " ("+appName+")");
@@ -72,19 +73,14 @@ function spawnMongo() {
       appName = "mongodb";
   mongo.stdout.on('data', function (data) {
     process.stdout.write("[" + appName + "] " + data);
-    if(process.platform==="win32") {
-      // don't start the Webmaker Suite until ES and Mongo have started up.
-      if(data.toString().indexOf("waiting for connections")>-1) {
-        setTimeout(run, 1000);
-      }
+    // don't start the Webmaker Suite until ES and Mongo have started up.
+    if(data.toString().indexOf("waiting for connections")>-1) {
+      setTimeout(run, 1000);
     }
   });
   mongo.stderr.on('data', function (data) { process.stderr.write("[" + appName + "] " + data); });
   mongo.on('error', function () { console.log("[" + appName + "] ERROR", arguments); mongo.kill(); });
   mongo.on('close', function (code) { console.log(appName + ' process exited with code ' + code); });
-  if(process.platform !== "win32") {
-    setTimeout(run, 1000);
-  }
 };
 
 /**
