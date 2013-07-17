@@ -16,7 +16,7 @@ function getRunTime() {
   argv.option({
       name: 'noes',
       type: 'string',
-      description: 'Do not start elastic searc (useful for when you already run es)',
+      description: 'Do not start elastic search (useful for when you already run es)',
       example: "'node run --noes'"
   });
   return argv.run().options;
