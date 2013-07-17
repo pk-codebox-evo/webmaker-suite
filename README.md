@@ -28,7 +28,7 @@ These do the obvious thing. If you do not use these, and do not have an .env fil
 
 `node update-webmaker` will update all repositories to their current `master` branch. It effectively runs the following commands for each repository:
 
-1. `git fetch mozilla
+1. `git fetch mozilla`
 2. `git checkout -B master mozilla/master`
 3. `rm -rf node_modules`
 4. `npm install`
