@@ -19,9 +19,10 @@ function getRunTime() {
 }
 
 var fs = require("fs"),
-    repos = require("./lib/repos")(),
+    npm = require("./lib/npmstring"),
+    repos = require("./lib/repos")(npm),
     batchExec = require("./lib/batch").batchExec,
-    updates = [
+    update = [
       "git fetch mozilla",
       "git checkout -B master mozilla/master"
     ];
@@ -29,13 +30,20 @@ var fs = require("fs"),
 function updateRepos(repositories) {
   if (repositories.length === 0) {
     console.log("Finished updating all repositories.");
+
     return;
   }
   var appName = repositories.splice(0,1)[0],
       app = repos[appName];
+      commands = update.slice();
+
+  if(app.install) {
+    commands = commands.concat(app.install);
+  }
+
   console.log("\n[" + appName + "]");
   process.chdir(appName);
-  batchExec(updates.slice(), function() {
+  batchExec(commands, function() {
     process.chdir("..");
     updateRepos(repositories);
   });

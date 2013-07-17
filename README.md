@@ -12,9 +12,9 @@ After installation completes, the whole suite can be fired up with `node run`. N
 
 ## Script options
 
-### node install
+### install the suite
 
-`node install` can take four runtime options:
+`node install-webmaker` can take four runtime options:
 
 1. --username=...
 2. --password=...
@@ -23,23 +23,35 @@ After installation completes, the whole suite can be fired up with `node run`. N
 
 These do the obvious thing. If you do not use these, and do not have an .env file (which initially you won't), you will be prompted for them during the bootstrap phase, after `npm install` for the webmaker-suite package itself finishes.
 
+
+### update the suite
+
+`node update-webmaker` will update all repositories to their current `master` branch. It effectively runs the following commands for each repository:
+
+1. `git fetch mozilla
+2. `git checkout -B master mozilla/master`
+3. `rm -rf node_modules`
+4. `npm install`
+5. `npm cache clean`
+
 ### node run
 
-`node run` can take two runtime options:
+`node run` will run all apps in the webmaker suite. It can take two runtime options:
 
 1. --noes
 2. --nomongo
 
 These mostly exist to prevent double-starts for elastic search and mongodb, if you already run these on your machine, since `node run` will try to fire these up for you.
 
+
 ## General requirements
 
 * node.js - http://nodejs.org/
 * npm - comes with node.js
 * python - http://python.org/ (pretty sure we depend on 2.7)
-* pip - http://peak.telecommunity.com/dist/ez_setup.py  + "easy_setup pip"
-* mongodb - http://www.mongodb.org/downloads
-* elastic search - http://www.elasticsearch.org/
+* pip - `easy_setup pip` (if command unknown, run http://peak.telecommunity.com/dist/ez_setup.py through python, first)
+* mongodb - http://www.mongodb.org/downloads (or through your favourite package manager)
+* elastic search - http://www.elasticsearch.org (or through your favourite package manager)
 
 
 ### Windows users should note:
@@ -53,13 +65,15 @@ Windows users need to install these two things first (in order):
 
 ## OSX convenience
 
-install mongodb and elasticsearch using `brew`, and you should be all set. Convenient!
+You will need the X-Code command line utilities. These are free through Apple's developer appstore. You will also want `brew`, which is a package manager for OSX.
 
-If you elect to run these on startup, you will want to make sure to use `node run --noes --nomongo` when you use the suite runner, or `run.js` will try to double-start ES and MongoDB.
+With these, install mongodb and elasticsearch using `brew`, and you should be all set. Convenient!
 
-## Windows silliness
+(If you elect to run these on startup, you will want to make sure to use `node run --noes --nomongo` when you use the suite runner, or `run.js` will try to double-start ES and MongoDB)
 
-If you're on windows, MongoDB and Elastic Search require manual installation, which means putting in their own folders and extending your PATH:
+## Windows particulars
+
+If you're on windows, MongoDB and Elastic Search require manual installation, which means putting them in their own folders and extending your PATH:
 
 #### MongoDB on Windows
 
@@ -71,6 +85,6 @@ Download elastic search, create a folder `C:\elastisearch` (I am not kidding, ES
 
 `C:\> mklink /D java "c:\Program Files (x86)\Java\jdk1.6.0_17"`
 
-(to remove that at some longer point, use `C:\> unlink java` with admin rights).
+(to remove that at some longer point, simply delete the `C:\java` dir. It will unlink, rather than delete your jdk files)
 
 Also add `C:\elasticsearch\bin` to your PATH variable.
