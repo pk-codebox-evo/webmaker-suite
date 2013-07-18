@@ -40,6 +40,10 @@ These do the obvious thing. If you do not use these, and do not have an .env fil
 
 1. --noes
 2. --nomongo
+3. --exclude=[comma separated list of names]
+
+The `--exclude` flag takes a comma separated list of app names that should not be started up. If you wish to test only the MakeAPI, for instance, you could issue `node run --exclude=goggles,thimble,popcorn,login,webmaker.org,htmlsanitizer.org`. Note that, for convenience, app names that are of the form "xyz.webmaker.org" can be excluded using only the "xyz" part of the name.
+
 
 These mostly exist to prevent double-starts for elastic search and mongodb, if you already run these on your machine, since `node run` will try to fire these up for you.
 
