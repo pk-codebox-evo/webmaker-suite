@@ -223,7 +223,7 @@ function getRunTime() {
   var npmString = require("./lib/npmstring");
   var commands = (process.argv.indexOf("--skipnpm") > -1 ? [] : [
     "rm -rf node_modules",
-    npmString + " install",
+    npmString + " install --no-bin-links",
     npmString + " cache clean"
   ]);
   batchExec(commands, function() {
