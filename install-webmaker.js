@@ -221,11 +221,11 @@ function getRunTime() {
 (function bootStrap(){
   console.log("Bootstrapping installer...");
   var npmString = require("./lib/npmstring");
-  var commands = (process.argv.indexOf("--skipnpm") > -1 ? [] : [
+  var commands = [
     "rm -rf node_modules",
     npmString + " install --no-bin-links",
     npmString + " cache clean"
-  ]);
+  ];
   batchExec(commands, function() {
     runtime = getRunTime();
 
