@@ -19,7 +19,23 @@ function getRunTime() {
       description: 'Do not start elastic search (useful for when you already run es)',
       example: "'node run --noes'"
   });
-  return argv.run().options;
+  argv.option({
+      name: 'exclude',
+      type: 'list.string',
+      description: 'Do not start specific apps. For convenience, apps named "xyz.webmaker.org" can be indicated as just "xyz".',
+      example: "'node run --exclude=goggles,webmaker.org,htmlsanitizer.org,makeapi'"
+  });
+  var runtime = argv.run().options;
+  runtime.exclude = runtime.exclude.split(",").map(function(v) { return v.toLowerCase(); });
+  runtime.excluded = function(key) {
+    key = key.toLowerCase();
+    var excluded = (runtime.exclude.indexOf(key) !== -1);
+    if(excluded) return true;
+    key = key.replace(".webmaker.org",'');
+    excluded = (runtime.exclude.indexOf(key) !== -1);
+    return excluded;
+  };
+  return runtime;
 }
 
 
@@ -31,6 +47,9 @@ var fs = require("fs"),
 function run() {
   var i = 1;
   Object.keys(repos).forEach(function (appName) {
+    if(runtime.excluded(appName)) {
+      return; // do not run this app.
+    }
     var app = repos[appName];
     if (app.run && !app.process) {
       var args = app.run.split(' ');
