@@ -47,6 +47,17 @@ The `--exclude` flag takes a comma separated list of app names that should not b
 
 These mostly exist to prevent double-starts for elastic search and mongodb, if you already run these on your machine, since `node run` will try to fire these up for you.
 
+## Browser locations
+
+When running the suite, the following locations are available:
+
+* http://localhost:3000 - login.webmaker.org
+* http://localhost:3500 - thimble.webmaker.org
+* http://localhost:5000 - makeapi
+* http://localhost:5050 - htmlsanitizer.org
+* http://localhost:7777 - webmaker.org
+* http://localhost:8888 - popcorn.webmaker.org
+* http://localhost:12416 - goggles.webmaker.org
 
 ## General requirements
 

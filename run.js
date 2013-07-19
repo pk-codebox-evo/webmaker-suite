@@ -26,15 +26,20 @@ function getRunTime() {
       example: "'node run --exclude=goggles,webmaker.org,htmlsanitizer.org,makeapi'"
   });
   var runtime = argv.run().options;
-  runtime.exclude = runtime.exclude.split(",").map(function(v) { return v.toLowerCase(); });
-  runtime.excluded = function(key) {
-    key = key.toLowerCase();
-    var excluded = (runtime.exclude.indexOf(key) !== -1);
-    if(excluded) return true;
-    key = key.replace(".webmaker.org",'');
-    excluded = (runtime.exclude.indexOf(key) !== -1);
-    return excluded;
-  };
+  runtime.excluded = function() { return false; }
+
+  if(runtime.exclude) {
+    runtime.exclude = runtime.exclude.split(",").map(function(v) { return v.toLowerCase(); });
+    runtime.excluded = function(key) {
+      key = key.toLowerCase();
+      var excluded = (runtime.exclude.indexOf(key) !== -1);
+      if(excluded) return true;
+      key = key.replace(".webmaker.org",'');
+      excluded = (runtime.exclude.indexOf(key) !== -1);
+      return excluded;
+    };
+  }
+
   return runtime;
 }
 
