@@ -45,6 +45,7 @@ function getRunTime() {
 
 
 var fs = require("fs"),
+    batchExec = require("./lib/batch").batchExec,
     repos = require("./lib/repos")(),
     runtime = getRunTime(),
     spawn = require("child_process").spawn;
@@ -92,19 +93,21 @@ function spawnMongo() {
   // ensure we have a data directory for mongo
   if(!fs.existsSync("./mongo")) { fs.mkdirSync("mongo"); }
 
-  // set up database
-  var mongo = spawn("mongod", ["--dbpath","./mongo/", "-v"]),
-      appName = "mongodb";
-  mongo.stdout.on('data', function (data) {
-    process.stdout.write("[" + appName + "] " + data);
-    // don't start the Webmaker Suite until ES and Mongo have started up.
-    if(data.toString().indexOf("waiting for connections")>-1) {
-      setTimeout(run, 1000);
-    }
+  // clean any lock files that might exist, and set up database
+  batchExec(["rm mongo/mongod.lock"], function() {
+    var mongo = spawn("mongod", ["--dbpath","./mongo/", "-v"]),
+        appName = "mongodb";
+    mongo.stdout.on('data', function (data) {
+      process.stdout.write("[" + appName + "] " + data);
+      // don't start the Webmaker Suite until ES and Mongo have started up.
+      if(data.toString().indexOf("waiting for connections")>-1) {
+        setTimeout(run, 1000);
+      }
+    });
+    mongo.stderr.on('data', function (data) { process.stderr.write("[" + appName + "] " + data); });
+    mongo.on('error', function () { console.log("[" + appName + "] ERROR", arguments); mongo.kill(); });
+    mongo.on('close', function (code) { console.log(appName + ' process exited with code ' + code); });
   });
-  mongo.stderr.on('data', function (data) { process.stderr.write("[" + appName + "] " + data); });
-  mongo.on('error', function () { console.log("[" + appName + "] ERROR", arguments); mongo.kill(); });
-  mongo.on('close', function (code) { console.log(appName + ' process exited with code ' + code); });
 };
 
 /**

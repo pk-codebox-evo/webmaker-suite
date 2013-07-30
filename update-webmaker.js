@@ -30,8 +30,7 @@ var fs = require("fs"),
 function updateRepos(repositories) {
   if (repositories.length === 0) {
     console.log("Finished updating all repositories.");
-
-    return;
+    process.exit(0);
   }
   var appName = repositories.splice(0,1)[0],
       app = repos[appName];
