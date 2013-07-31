@@ -46,7 +46,8 @@ function getRunTime() {
 
 var fs = require("fs"),
     batchExec = require("./lib/batch").batchExec,
-    repos = require("./lib/repos")(),
+    commandStrings = require("./lib/commandstrings"),
+    repos = require("./lib/repos")(commandStrings),
     runtime = getRunTime(),
     spawn = require("child_process").spawn;
 

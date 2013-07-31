@@ -23,7 +23,7 @@ var batchExec = require("./lib/batch").batchExec,
 /**
  * This function houses all the installer code
  */
-function runInstaller(runtime, npmString) {
+function runInstaller(runtime, commandStrings) {
   console.log("Finished bootstrapping.");
 
   console.log("\n===================================================================");
@@ -48,7 +48,7 @@ function runInstaller(runtime, npmString) {
           return '';
         return username + ":" + password + "@";
       }(gitOptions)),
-      repos = require("./lib/repos")(npmString);
+      repos = require("./lib/repos")(commandStrings);
 
   // Our list of apps that belong to the Webmaker Suite
   // This list will become a middleware list instead, so
@@ -220,12 +220,15 @@ function getRunTime() {
  */
 (function bootStrap(){
   console.log("Bootstrapping installer...");
-  var npmString = require("./lib/npmstring");
-  var commands = [
-    "rm -rf node_modules",
-    npmString + " install --no-bin-links",
-    npmString + " cache clean"
-  ];
+
+  var commandStrings = require("./lib/commandstrings"),
+      npm = commandStrings.npm,
+      commands = [
+        "rm -rf node_modules",
+        npm + " install --no-bin-links",
+        npm + " cache clean"
+      ];
+
   batchExec(commands, function() {
     runtime = getRunTime();
 
@@ -247,7 +250,7 @@ function getRunTime() {
           ''].join("\n");
         fs.writeFileSync(".env", content);
         console.log(".env file created.");
-        runInstaller(runtime, npmString);
+        runInstaller(runtime, commandStrings);
       };
 
       // do we still need git username/password and s3 key/secret combinations?
@@ -270,6 +273,6 @@ function getRunTime() {
     }
 
     // we already had an .env file
-    else { runInstaller(runtime, npmString); }
+    else { runInstaller(runtime, commandStrings); }
   });
 }());

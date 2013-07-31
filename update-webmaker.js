@@ -19,7 +19,7 @@ function getRunTime() {
 }
 
 var fs = require("fs"),
-    npm = require("./lib/npmstring"),
+    npm = require("./lib/commandstrings"),
     repos = require("./lib/repos")(npm),
     batchExec = require("./lib/batch").batchExec,
     update = [
