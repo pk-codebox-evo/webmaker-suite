@@ -63,6 +63,7 @@ When running the suite, the following locations are available:
 
 * node.js - http://nodejs.org/
 * npm - comes with node.js
+* bower - `npm install -g bower`
 * python - http://python.org/ (pretty sure we depend on 2.7)
 * pip - `easy_setup pip` (if command unknown, run http://peak.telecommunity.com/dist/ez_setup.py through python, first)
 * mongodb - http://www.mongodb.org/downloads (or through your favourite package manager)
