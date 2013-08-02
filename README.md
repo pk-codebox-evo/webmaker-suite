@@ -23,6 +23,7 @@ After installation completes, the whole suite can be fired up with `node run`. N
 
 These do the obvious thing. If you do not use these, and do not have an .env file (which initially you won't), you will be prompted for them during the bootstrap phase, after `npm install` for the webmaker-suite package itself finishes.
 
+After the installer finishes everything should be able to run, but you won't be able to publish any makes unless you also make sure that the S3 credentials for all the tools are in the right place. For now, this is a manual job for goggles, thimble, and popcorn. For goggles and thimble, open the `.env` files and replace the dummy S3 values with the real credentials you want to use. For popcorn, open `local.json`. This will already have the key and secret that you filled in during installation prefilled, but the buckname will still be just a default name so you'll have to change that to ensure publication will work.
 
 ### update the suite
 
@@ -34,6 +35,7 @@ These do the obvious thing. If you do not use these, and do not have an .env fil
 4. `npm install`
 5. `npm cache clean`
 
+
 ### node run
 
 `node run` will run all apps in the webmaker suite. It can take two runtime options:
@@ -44,8 +46,8 @@ These do the obvious thing. If you do not use these, and do not have an .env fil
 
 The `--exclude` flag takes a comma separated list of app names that should not be started up. If you wish to test only the MakeAPI, for instance, you could issue `node run --exclude=goggles,thimble,popcorn,login,webmaker.org,htmlsanitizer.org`. Note that, for convenience, app names that are of the form "xyz.webmaker.org" can be excluded using only the "xyz" part of the name.
 
-
 These mostly exist to prevent double-starts for elastic search and mongodb, if you already run these on your machine, since `node run` will try to fire these up for you.
+
 
 ## Browser locations
 
@@ -59,6 +61,7 @@ When running the suite, the following locations are available:
 * http://localhost:8888 - popcorn.webmaker.org
 * http://localhost:12416 - goggles.webmaker.org
 
+
 ## General requirements
 
 * node.js - http://nodejs.org/
@@ -70,7 +73,7 @@ When running the suite, the following locations are available:
 * elastic search - http://www.elasticsearch.org (or through your favourite package manager)
 
 
-### Windows users should note:
+## Webmaker-Suite on Windows
 
 Windows users need to install these two things first (in order):
 
@@ -79,17 +82,7 @@ Windows users need to install these two things first (in order):
 
 (Without this VC++ stack, node-gyp will crash the `npm install` process when it gets to `sqlite3` and tries to build it without having access to the windows C++ compiler and header files. Since several apps rely on sqlite3 for localhost work, you need these).
 
-## OSX convenience
-
-You will need the X-Code command line utilities. These are free through Apple's developer appstore. You will also want `brew`, which is a package manager for OSX.
-
-With these, install mongodb and elasticsearch using `brew`, and you should be all set. Convenient!
-
-(If you elect to run these on startup, you will want to make sure to use `node run --noes --nomongo` when you use the suite runner, or `run.js` will try to double-start ES and MongoDB)
-
-## Windows particulars
-
-If you're on windows, MongoDB and Elastic Search require manual installation, which means putting them in their own folders and extending your PATH:
+Also, if you're on windows, MongoDB and Elastic Search require manual installation, which means putting them in their own folders and extending your PATH:
 
 #### MongoDB on Windows
 
@@ -104,3 +97,16 @@ Download elastic search, create a folder `C:\elastisearch` (I am not kidding, ES
 (to remove that at some longer point, simply delete the `C:\java` dir. It will unlink, rather than delete your jdk files)
 
 Also add `C:\elasticsearch\bin` to your PATH variable.
+
+
+## Webmaker-Suite on OSX
+
+You will need the X-Code command line utilities. These are free through Apple's developer appstore. You will also want `brew`, which is a package manager for OSX.
+
+With these, install mongodb and elasticsearch using `brew`, and you should be all set. Convenient!
+
+(If you elect to run these on startup, you will want to make sure to use `node run --noes --nomongo` when you use the suite runner, or `run.js` will try to double-start ES and MongoDB)
+
+### OSX and MongoDB
+
+Mongodb may have told itself to log to a file, instead of to the console. If it has, starting `mongod` will show you a single line of output stating where it's logging to. If this is all you see when you start up Mongo, open its config file by typing the command `vi usr/local/etc/mongod.conf`, and remove the logging instruction in that file (cursor-navigate to an offending line, then press `d` twice to delete it. To save and quite, type `:`, then `wq`, then hit enter). You should now get normal console output when running `mongod`, which is essential for the webmaker-suite to run.

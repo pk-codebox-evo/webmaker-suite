@@ -127,11 +127,18 @@ function spawnMongo() {
   } else {
     es = spawn("elasticsearch", ["-f", "-D", "es.config=/usr/local/opt/elasticsearch/config/elasticsearch.yml"]);
   }
+
   es.stdout.on('data', function (data) {
     process.stdout.write("[" + appName + "] " + data);
     // don't start Mongo until ES has started up.
     if(data.toString().indexOf(": started")>-1) {
-      setTimeout(spawnMongo, 1000);
+      // clear ES index to prevent pollution:
+      batchExec([
+        "curl -XDELETE 'http://127.0.0.1:9200/makes'"
+      ], function () {
+        console.log();
+        setTimeout(spawnMongo, 1000);
+      });
     }
   });
   es.stderr.on('data', function (data) { process.stderr.write("[" + appName + "] " + data); });
