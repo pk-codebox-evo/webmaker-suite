@@ -5,7 +5,8 @@
   "dependencies": {
     "argv": "0.0.2",
     "habitat": "0.4.2",
-    "prompt": "0.2.11"
+    "prompt": "0.2.11",
+    "http-server": "~0.5.5"
   },
   "devDependencies": {}
 }

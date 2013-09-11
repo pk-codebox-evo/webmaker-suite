@@ -153,6 +153,7 @@ function runInstaller(runtime, commandStrings) {
 
         process.chdir(repo);
         var commands = (runtime.skipclone ? [] : [
+          "git checkout master",
           "git submodule update --init --recursive",
           "git remote rename origin mozilla",
           "git remote add origin ssh://git@github.com/" + username + "/" + repo + ".git",

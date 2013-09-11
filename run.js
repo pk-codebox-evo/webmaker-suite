@@ -59,24 +59,31 @@ function run() {
     }
     var app = repos[appName];
     if (app.run && !app.process) {
-      var args = app.run.split(' ');
-      cmd = args.splice(0,1)[0];
-      console.log("> "+app.run + " ("+appName+")");
-      process.chdir(appName);
-      var sp = spawn(cmd, args);
-      process.chdir("..");
-      app.process = sp;
-      sp.stdout.on('data', function (data) { process.stdout.write("[" + appName + "] " + data); });
-      sp.stderr.on('data', function (data) { process.stderr.write("[" + appName + "] " + data); });
-      sp.on('error', function () {
-        console.log("[" + appName + "]" + error, arguments);
-        sp.kill();
-        app.process = false;
-      });
-      sp.on('close', function (code) {
-        console.log('child process exited with code ' + code);
-        sp.kill()
-        app.process = false;
+
+      if(typeof app.run === "string") {
+        app.run = [app.run];
+      }
+
+      app.run.forEach(function(command) {
+        var args = command.split(' ');
+        cmd = args.splice(0,1)[0];
+        console.log("> "+command + " ("+appName+")");
+        process.chdir(appName);
+        var sp = spawn(cmd, args);
+        process.chdir("..");
+        app.process = sp;
+        sp.stdout.on('data', function (data) { process.stdout.write("[" + appName + "] " + data); });
+        sp.stderr.on('data', function (data) { process.stderr.write("[" + appName + "] " + data); });
+        sp.on('error', function () {
+          console.log("[" + appName + "] error: ", arguments);
+          sp.kill();
+          app.process = false;
+        });
+        sp.on('close', function (code) {
+          console.log('child process exited with code ' + code);
+          sp.kill()
+          app.process = false;
+        });
       });
     }
   });
