@@ -9,5 +9,7 @@ node_modules
 node-webmaker-loginapi
 popcorn.webmaker.org
 thimble.webmaker.org
+togetherjs
+towtruck
 webmaker.org
 .env
