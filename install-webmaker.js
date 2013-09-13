@@ -38,15 +38,13 @@ function runInstaller(runtime, commandStrings) {
       }()),
       gitOptions = new habitat("git"),
       username,
-      password,
       gitCredentials = (function(options) {
         if (!options)
           return '';
-        username = options.get("username"),
-        password = options.get("password");
-        if (!username || !password)
+        username = options.get("username");
+        if (!username)
           return '';
-        return username + ":" + password + "@";
+        return username;
       }(gitOptions)),
       repos = require("./lib/repos")(commandStrings);
 
@@ -141,7 +139,7 @@ function runInstaller(runtime, commandStrings) {
     // clone the next repository
     else {
       var repo = repositories.pop(),
-          repoURL = "https://" + gitCredentials + "github.com/mozilla/" + repo + ".git",
+          repoURL = "https://github.com/mozilla/" + repo + ".git",
           rm = "rm -rf " + repo,
           clone = "git clone " + repoURL,
           commands = (runtime.skipclone ? [] : [rm, clone]);
@@ -156,7 +154,7 @@ function runInstaller(runtime, commandStrings) {
           "git checkout master",
           "git submodule update --init --recursive",
           "git remote rename origin mozilla",
-          "git remote add origin ssh://git@github.com/" + username + "/" + repo + ".git",
+          "git remote add origin ssh://git@github.com:" + username + "/" + repo + ".git",
         ]);
         batchExec(commands, function() {
           process.chdir("..");
@@ -181,13 +179,7 @@ function getRunTime() {
       name: 'username',
       type: 'string',
       description: 'Username for git',
-      example: "'node install --username=username --password=password'"
-  });
-  argv.option({
-      name: 'password',
-      type: 'string',
-      description: 'Password for git',
-      example: "'node install --username=username --password=password'"
+      example: "'node install --username=username"
   });
   argv.option({
       name: 's3key',
@@ -245,7 +237,6 @@ function getRunTime() {
         // write local .env
         var content = [
           'export GIT_USERNAME="' + result.username + '"',
-          'export GIT_PASSWORD="' + result.password + '"',
           'export S3_KEY="'       + result.s3key    + '"',
           'export S3_SECRET="'    + result.s3secret + '"',
           ''].join("\n");
@@ -254,19 +245,18 @@ function getRunTime() {
         runInstaller(runtime, commandStrings);
       };
 
-      // do we still need git username/password and s3 key/secret combinations?
-      if (!runtime.username || !runtime.password || !runtime.s3key || !runtime.s3secret) {
+      // do we still need git username and s3 key/secret combinations?
+      if (!runtime.username || !runtime.s3key || !runtime.s3secret) {
         console.log("Please specify your git and AWS credentials:");
         var prompt = require("prompt");
         prompt.start();
-        prompt.get(['username', 'password', 's3key', 's3secret'], writeEnv);
+        prompt.get(['username', 's3key', 's3secret'], writeEnv);
       }
 
       // we got the user/pass information from the runtime arguments
       else {
         writeEnv(null, {
           username: runtime.username,
-          password: runtime.password,
           s3key: runtime.s3key,
           s3secret: runtime.s3secret
         });
