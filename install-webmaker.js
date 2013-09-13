@@ -154,7 +154,7 @@ function runInstaller(runtime, commandStrings) {
           "git checkout master",
           "git submodule update --init --recursive",
           "git remote rename origin mozilla",
-          "git remote add origin ssh://git@github.com:" + username + "/" + repo + ".git",
+          "git remote add origin git@github.com:" + username + "/" + repo + ".git",
         ]);
         batchExec(commands, function() {
           process.chdir("..");
