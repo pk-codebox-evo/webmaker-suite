@@ -34,14 +34,15 @@ function runInstaller(runtime, commandStrings) {
   var habitat = (function() {
         var habitat = require("habitat");
         habitat.load();
-        return habitat;
+        return new habitat();
       }()),
-      gitOptions = new habitat("git"),
+      awsOptions = habitat.get("s3"),
+      gitOptions = habitat.get("git"),
       username,
       gitCredentials = (function(options) {
         if (!options)
           return '';
-        username = options.get("username");
+        username = options.username;
         if (!username)
           return '';
         return username;
@@ -53,6 +54,38 @@ function runInstaller(runtime, commandStrings) {
   // that it's easier to manipulate, and easier to require
   // in other apps (like for "node run").
   var repositories = Object.keys(repos);
+
+  /**
+   * Tweak all .env files that require AWS credentials
+   * to use the ones that we got from the user.
+   */
+  function setupAWS(repositories, next) {
+    if (repositories.length === 0) {
+      return setTimeout(next, 10);
+    };
+    var repo = repositories.pop(),
+        aws = repos[repo].aws;
+    if (aws) {
+      process.chdir(repo);
+      var data = "" + fs.readFileSync(aws), line, i, last,
+          lines = data.split("\n");
+      for(i=0, last=lines.length; i<last; i++) {
+        line = lines[i];
+        if(line.indexOf("S3_KEY=")>-1) {
+          lines[i] = "export S3_KEY=\"" + awsOptions.key + "\"";
+        }
+        else if(line.indexOf("S3_SECRET=")>-1) {
+          lines[i] = "export S3_SECRET=\"" + awsOptions.secret + "\"";
+        }
+        else if(line.indexOf("S3_BUCKET=")>-1) {
+          lines[i] = "export S3_BUCKET=\"" + awsOptions.bucket + "\"";
+        }
+      }
+      fs.writeFileSync(aws, lines.join("\n"));
+      process.chdir("..");
+    }
+    setupAWS(repositories, next);
+  }
 
   /**
    * Set up the environment for specific repositories
@@ -87,8 +120,12 @@ function runInstaller(runtime, commandStrings) {
   function setupEnvironments() {
     console.log();
     setupEnvironment(repositories = Object.keys(repos), function() {
-      console.log("\nInstallation complete.");
-      process.exit(0);
+      console.log("\nsetting AWS credentials...");
+      setupAWS(repositories = Object.keys(repos), function() {
+        console.log("\nInstallation complete.");
+        process.exit(0);
+      });
+
     });
   };
 
@@ -194,6 +231,12 @@ function getRunTime() {
       example: "'node install --s3key=abcdefg --s3secret=123456'"
   });
   argv.option({
+      name: 's3bucket',
+      type: 'string',
+      description: 'Bucket name to use with Amazon Web Services\' S3',
+      example: "'node install --s3key=abcdefg --s3secret=123456' --s3bucket=my.bucket.name"
+  });
+  argv.option({
       name: 'skipclone',
       type: 'string',
       description: 'Skip all \'git clone\' steps',
@@ -239,6 +282,7 @@ function getRunTime() {
           'export GIT_USERNAME="' + result.username + '"',
           'export S3_KEY="'       + result.s3key    + '"',
           'export S3_SECRET="'    + result.s3secret + '"',
+          'export S3_BUCKET="'    + result.s3bucket + '"',
           ''].join("\n");
         fs.writeFileSync(".env", content);
         console.log(".env file created.");
@@ -246,11 +290,11 @@ function getRunTime() {
       };
 
       // do we still need git username and s3 key/secret combinations?
-      if (!runtime.username || !runtime.s3key || !runtime.s3secret) {
+      if (!runtime.username || !runtime.s3key || !runtime.s3secret || !runtime.s3bucket) {
         console.log("Please specify your git and AWS credentials:");
         var prompt = require("prompt");
         prompt.start();
-        prompt.get(['username', 's3key', 's3secret'], writeEnv);
+        prompt.get(['username', 's3key', 's3secret', 's3bucket'], writeEnv);
       }
 
       // we got the user/pass information from the runtime arguments
@@ -258,7 +302,8 @@ function getRunTime() {
         writeEnv(null, {
           username: runtime.username,
           s3key: runtime.s3key,
-          s3secret: runtime.s3secret
+          s3secret: runtime.s3secret,
+          s3bucket: runtime.s3bucket
         });
       }
     }
