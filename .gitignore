@@ -6,7 +6,9 @@ MakeAPI
 makeapi-client
 mongo
 node_modules
+node-webmaker-i18n
 node-webmaker-loginapi
+node-webmaker-postalservice
 popcorn.webmaker.org
 thimble.webmaker.org
 togetherjs
