@@ -1,29 +1,35 @@
 # Webmaker Suite bootstrap/installation script
 
+Prerequisites: see the "general requirements" section below.
+
 Step 1: Clone this repo
 
-Step 2: Run `node install`
+Step 2: open a terminal in the repo's directory and run `node install`
 
 Step 3: Go make some coffee, this'll run for a while...
 
 After installation completes, the whole suite can be fired up with `node run`. Note that this will pipe all output from everything into the same console, so this is great for not-looking-at-the-terminal testing, but not a good idea for doing single-component terminal debugging.
 
-**NOTE** it looks like login.webmaker.org somehow triggers a "too many files open" error when doing an automated `npm install`. Not sure what causes this (yet) but for the moment you'll have to go into the login.webmaker.org dir and type `npm install` manually.
-
 ## Script options
 
 ### install the suite
 
-`node install-webmaker` can take four runtime options:
+`node install-webmaker` can take several runtime options:
 
 1. --username=...
-2. --password=...
-3. --s3key=...
-4. --s3secret=...
+2. --s3key=...
+3. --s3secret=...
+4. --s3bucket=...
 
 These do the obvious thing. If you do not use these, and do not have an .env file (which initially you won't), you will be prompted for them during the bootstrap phase, after `npm install` for the webmaker-suite package itself finishes.
 
-After the installer finishes everything should be able to run, but you won't be able to publish any makes unless you also make sure that the S3 credentials for all the tools are in the right place. For now, this is a manual job for goggles, thimble, and popcorn. For goggles and thimble, open the `.env` files and replace the dummy S3 values with the real credentials you want to use. For popcorn, open `local.json`. This will already have the key and secret that you filled in during installation prefilled, but the buckname will still be just a default name so you'll have to change that to ensure publication will work.
+If you do not provide legal s3 credentials, the tools will still work but you will not be able to publish anything (for true offline use, an S3 emulation is currently beeing worked on, see https://bugzilla.mozilla.org/show_bug.cgi?id=898463 for its current status)
+
+5. --skipclone
+6. --skipnpm
+
+these will skip the cloning and npm install processes, respectively, in case you need to only run certain parts of the installer.
+
 
 ### update the suite
 
@@ -31,9 +37,11 @@ After the installer finishes everything should be able to run, but you won't be 
 
 1. `git fetch mozilla`
 2. `git checkout -B master mozilla/master`
-3. `rm -rf node_modules`
-4. `npm install`
-5. `npm cache clean`
+3. `git submodule sync`
+4. `git submodule update --init --recursive`
+5. `rm -rf node_modules`
+6. `npm install`
+7. `npm cache clean`
 
 
 ### node run
@@ -67,6 +75,7 @@ When running the suite, the following locations are available:
 * node.js - http://nodejs.org/
 * npm - comes with node.js
 * bower - `npm install -g bower`
+* grunt - `npm install -g grunt-cli`
 * python - http://python.org/ (pretty sure we depend on 2.7)
 * pip - `easy_setup pip` (if command unknown, run http://peak.telecommunity.com/dist/ez_setup.py through python, first)
 * mongodb - http://www.mongodb.org/downloads (or through your favourite package manager)
@@ -80,7 +89,7 @@ Windows users need to install these two things first (in order):
 1. Microsoft Visual Studio C++ 2010 Express, http://go.microsoft.com/?linkid=9709949
 2. For Windows 7 x64 (which obviously you're on), the Windows 7 64-bit SDK, http://www.microsoft.com/en-us/download/details.aspx?id=8279
 
-(Without this VC++ stack, node-gyp will crash the `npm install` process when it gets to `sqlite3` and tries to build it without having access to the windows C++ compiler and header files. Since several apps rely on sqlite3 for localhost work, you need these).
+(Without this VC++ stack, the `node-gyp` compiler will crash the `npm install` process when it gets to `sqlite3` and tries to build it without having access to the windows C++ compiler and header files. Since several apps rely on sqlite3 for localhost work, you need these).
 
 Also, if you're on windows, MongoDB and Elastic Search require manual installation, which means putting them in their own folders and extending your PATH:
 

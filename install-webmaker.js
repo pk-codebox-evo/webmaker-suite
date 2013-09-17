@@ -120,7 +120,7 @@ function runInstaller(runtime, commandStrings) {
   function setupEnvironments() {
     console.log();
     setupEnvironment(repositories = Object.keys(repos), function() {
-      console.log("\nsetting AWS credentials...");
+      console.log("setting AWS credentials.");
       setupAWS(repositories = Object.keys(repos), function() {
         console.log("\nInstallation complete.");
         process.exit(0);
@@ -189,6 +189,7 @@ function runInstaller(runtime, commandStrings) {
         process.chdir(repo);
         var commands = (runtime.skipclone ? [] : [
           "git checkout master",
+          "git submodule sync"
           "git submodule update --init --recursive",
           "git remote rename origin mozilla",
           "git remote add origin git@github.com:" + username + "/" + repo + ".git",

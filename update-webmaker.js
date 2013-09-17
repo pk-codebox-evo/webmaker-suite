@@ -25,6 +25,8 @@ var fs = require("fs"),
     update = [
       "git fetch mozilla",
       "git checkout -B master mozilla/master"
+      "git submodule sync"
+      "git submodule update --init --recursive"
     ];
 
 function updateRepos(repositories) {
