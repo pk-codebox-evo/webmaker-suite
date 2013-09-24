@@ -24,8 +24,8 @@ var fs = require("fs"),
     batchExec = require("./lib/batch").batchExec,
     update = [
       "git fetch mozilla",
-      "git checkout -B master mozilla/master"
-      "git submodule sync"
+      "git checkout -B master mozilla/master",
+      "git submodule sync",
       "git submodule update --init --recursive"
     ];
 
