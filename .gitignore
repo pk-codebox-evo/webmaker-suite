@@ -6,6 +6,7 @@ make-valet
 MakeAPI
 makeapi-client
 mongo
+mox-server
 node_modules
 node-webmaker-i18n
 node-webmaker-loginapi

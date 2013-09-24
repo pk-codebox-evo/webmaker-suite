@@ -77,9 +77,6 @@ function runInstaller(runtime, commandStrings) {
         else if(line.indexOf("S3_SECRET=")>-1) {
           lines[i] = "export S3_SECRET=\"" + awsOptions.secret + "\"";
         }
-        else if(line.indexOf("S3_BUCKET=")>-1) {
-          lines[i] = "export S3_BUCKET=\"" + awsOptions.bucket + "\"";
-        }
       }
       fs.writeFileSync(aws, lines.join("\n"));
       process.chdir("..");
@@ -232,12 +229,6 @@ function getRunTime() {
       example: "'node install --s3key=abcdefg --s3secret=123456'"
   });
   argv.option({
-      name: 's3bucket',
-      type: 'string',
-      description: 'Bucket name to use with Amazon Web Services\' S3',
-      example: "'node install --s3key=abcdefg --s3secret=123456' --s3bucket=my.bucket.name"
-  });
-  argv.option({
       name: 'skipclone',
       type: 'string',
       description: 'Skip all \'git clone\' steps',
@@ -283,7 +274,6 @@ function getRunTime() {
           'export GIT_USERNAME="' + result.username + '"',
           'export S3_KEY="'       + result.s3key    + '"',
           'export S3_SECRET="'    + result.s3secret + '"',
-          'export S3_BUCKET="'    + result.s3bucket + '"',
           ''].join("\n");
         fs.writeFileSync(".env", content);
         console.log(".env file created.");
@@ -291,11 +281,11 @@ function getRunTime() {
       };
 
       // do we still need git username and s3 key/secret combinations?
-      if (!runtime.username || !runtime.s3key || !runtime.s3secret || !runtime.s3bucket) {
+      if (!runtime.username || !runtime.s3key || !runtime.s3secret) {
         console.log("Please specify your git and AWS credentials:");
         var prompt = require("prompt");
         prompt.start();
-        prompt.get(['username', 's3key', 's3secret', 's3bucket'], writeEnv);
+        prompt.get(['username', 's3key', 's3secret'], writeEnv);
       }
 
       // we got the user/pass information from the runtime arguments
@@ -303,8 +293,7 @@ function getRunTime() {
         writeEnv(null, {
           username: runtime.username,
           s3key: runtime.s3key,
-          s3secret: runtime.s3secret,
-          s3bucket: runtime.s3bucket
+          s3secret: runtime.s3secret
         });
       }
     }
