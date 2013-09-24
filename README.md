@@ -4,7 +4,7 @@ Prerequisites: see the "general requirements" section below.
 
 Step 1: Clone this repo
 
-Step 2: open a terminal in the repo's directory and run `node install`
+Step 2: open a terminal in the repo's directory and run `node install-webmaker`
 
 Step 3: Go make some coffee, this'll run for a while...
 
