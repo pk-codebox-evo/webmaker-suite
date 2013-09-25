@@ -112,7 +112,11 @@ Download elastic search, create a folder `C:\elastisearch` (I am not kidding, ES
 
 `C:\> mklink /D java "c:\Program Files (x86)\Java\jdk1.6.0_17"`
 
-(to remove that at some longer point, simply delete the `C:\java` dir. It will unlink, rather than delete your jdk files)
+Make sure to use the path to your jdk directory here. If you installed Java jdk version 1.6.0_40 to `C:\Program Files\Java` then it would be this, instead:
+
+`C:\> mklink /D java "c:\Program Files\Java\jdk1.6.0_40"`
+
+(to remove that at some later point, simply delete the `C:\java` dir. It will unlink, rather than delete your jdk files)
 
 Also add `C:\elasticsearch\bin` to your PATH variable.
 
