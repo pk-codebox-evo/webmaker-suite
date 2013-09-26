@@ -1,6 +1,6 @@
 {
   "name": "webmaker-suite",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "repository": "https://github.com/Pomax/webmaker-suite",
   "dependencies": {
     "argv": "0.0.2",
