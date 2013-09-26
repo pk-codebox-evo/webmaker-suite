@@ -99,14 +99,16 @@ When running the suite, the following locations are available:
 
 ## Webmaker-Suite on Windows
 
-Windows users need to install these two things first (in order):
+Windows users will need the vc++ redistributable (2010) installed, which you probably already do (if you actually use windows for applications and games, chances that you already have this installed are pretty good, especially if you also play games on windows), but an easy way to check is to fire up a console and try "npm install sqlite3".
 
-1. Microsoft Visual Studio C++ 2010 Express, http://go.microsoft.com/?linkid=9709949
-2. For Windows 7 x64 (which obviously you're on), the Windows 7 64-bit SDK, http://www.microsoft.com/en-us/download/details.aspx?id=8279
+If that runs without problems, you don't need anything c++ related (and you can delete the `node_modules` dir that made).
 
-(Without this VC++ stack, the `node-gyp` compiler will crash the `npm install` process when it gets to `sqlite3` and tries to build it without having access to the windows C++ compiler and header files. Since several apps rely on sqlite3 for localhost work, you need these).
+If you got errors when trying to install sqlite3, you'll need to install one of the vc++ redistributable packages (which one depending on whether you're on 32 bit windows, or 64 bit windows):
 
-Also, if you're on windows, MongoDB and Elastic Search require manual installation, which means putting them in their own folders and extending your PATH:
+1. Microsoft Visual C++ 2010 Redistributable Package (x86), http://www.microsoft.com/en-us/download/details.aspx?id=5555
+2. Microsoft Visual C++ 2010 Redistributable Package (x64), http://www.microsoft.com/en-us/download/details.aspx?id=14632
+
+In addition to the vc++ redistributable, MongoDB and Elastic Search require some manual installation, which means putting them in their own folders and extending your PATH:
 
 #### MongoDB on Windows
 
@@ -129,7 +131,7 @@ Also add `C:\elasticsearch\bin` to your PATH variable.
 
 ## Webmaker-Suite on OSX
 
-You will need the X-Code command line utilities. These are free through Apple's developer appstore. You will also want `brew`, which is a package manager for OSX.
+You will need the X-Code command line utilities (You don't need a full XCode, just the command line utilities are enough). These are free through Apple's developer appstore. You will also want `brew`, http://brew.sh, which is a package manager for OSX.
 
 With these, install mongodb and elasticsearch using `brew`, and you should be all set. Convenient!
 
