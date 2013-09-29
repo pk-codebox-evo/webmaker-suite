@@ -116,7 +116,7 @@ Download mongodb as a zipfile, create a `MongoDB` folder for it in your program 
 
 #### Elastic Search on Windows
 
-Download elastic search, create a folder `C:\elasticsearch` (I am not kidding, ES has the worst restrictions), and unpack the .zip package into it (if this creates a dir `elasticsearch-0.9.20` or something, move everything in that dir up one leve, so that the `bin` dir is `c:\elasticsearch\bin`). Elastic Search requires Java, so if you don't have that install, grab the most recent JDK and install it. Then symlink the jdk dir as `c:\java`. Again, I am not joking; ES died on spaces anywhere. To do this, open a `cmd` box with administrative rights, to go `C:\` and type:
+Download elastic search, create a folder `C:\elasticsearch` (I am not kidding, ES has the worst restrictions), and unpack the .zip package into it (if this creates a dir `elasticsearch-0.9.20` or something, move everything in that dir up one level, so that the `bin` dir is `c:\elasticsearch\bin`). Elastic Search requires Java, so if you don't have that install, grab the most recent JDK and install it. Then symlink the jdk dir as `c:\java`. Again, I am not joking; ES died on spaces anywhere. To do this, open a `cmd` box with administrative rights, to go `C:\` and type:
 
 `C:\> mklink /D java "c:\Program Files (x86)\Java\jdk1.6.0_17"`
 
