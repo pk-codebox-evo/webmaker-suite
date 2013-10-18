@@ -13,9 +13,9 @@ Make sure you have the following prerequisites installed:
 * **Windows only** a basic `cygwin` (http://cygwin.com) or `mingw` (http://mingw.org) installation to ensure you have the `rm`, `git` and `curl` commands available.
 * node.js - http://nodejs.org (or through your favourite package manager)
 * npm - comes with node.js
-* bower - `npm install -g bower` (depends on npm, so install node.js first)
-* grunt - `npm install -g grunt-cli` (depends on npm, so install node.js first)
-* httpserver - `npm install -g httpserver` (depends on npm, so install node.js first)
+  * bower - `npm install -g bower` (depends on npm, so install node.js first)
+  * grunt - `npm install -g grunt-cli` (depends on npm, so install node.js first)
+  * httpserver - `npm install -g httpserver` (depends on npm, so install node.js first)
 * python - http://python.org (or through your favourite package manager), we depend on 2.7
 * pip - instructions on http://www.pip-installer.org/en/latest/installing.html
 * mongodb - http://www.mongodb.org/downloads (or through your favourite package manager)
