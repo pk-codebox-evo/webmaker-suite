@@ -15,7 +15,7 @@ Make sure you have the following prerequisites installed:
 * npm - comes with node.js
   * bower - `npm install -g bower` (depends on npm, so install node.js first)
   * grunt - `npm install -g grunt-cli` (depends on npm, so install node.js first)
-  * httpserver - `npm install -g httpserver` (depends on npm, so install node.js first)
+  * http-server - `npm install -g http-server` (depends on npm, so install node.js first)
 * python - http://python.org (or through your favourite package manager), we depend on 2.7
 * pip - instructions on http://www.pip-installer.org/en/latest/installing.html
 * mongodb - http://www.mongodb.org/downloads (or through your favourite package manager)
