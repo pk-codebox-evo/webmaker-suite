@@ -69,7 +69,7 @@ These mostly exist to prevent double-starts for elastic search and mongodb, if y
 
 When you call `node run` on Windows for the first time, it is entirely possible that you get Windows Firewall notices for java, python, elastic search, mongodb, and Node.js... You'll want to allow all of these on the private network at least (and probably public too, but that's up to you), but these notices WILL interfere with the first run. After allowing everything and the console stops spewing output, hit `ctrl-c` twice, then run `node run` again. There will be no Windows Firewal requests this time round, and the suite should start up without any problems.
 
-## updating the suite
+## Updating the suite
 
 `node update-webmaker` will update all repositories to their current `master` branch. It effectively runs the following commands for each repository:
 
@@ -83,6 +83,10 @@ When you call `node run` on Windows for the first time, it is entirely possible 
 8. `npm update`
 9. `bower install`
 10. `bower update`
+
+## Resetting the suite to `master`
+
+`node reset-webmaker` will reset all repos to the `master` branch indicated by the `mozilla` remote. This will undo any changes you may have locally made. Note that this does not first `git fetch mozill` to ensure an up to date head, since you may not want this in the slightest. If you wish to forward to the most recent master, use the `node update-webmaker` command instead.
 
 ## Browser locations
 
