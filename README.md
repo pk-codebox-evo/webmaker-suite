@@ -38,9 +38,9 @@ The `node install-webmaker` command can take several runtime options:
 2. --s3key=...
 3. --s3secret=...
 
-These do the obvious thing. If you do not use these, and do not have an .env file (which initially you won't), you will be prompted for them during the bootstrap phase, after the `npm install` step for the webmaker-suite package itself finishes.
+These do the obvious thing. If you do not use these, and do not have an .env file (which initially you won't), they will default to empty strings. Not specifying the username means you will not be given an `origin` remote in each repository, so running the install with a username is generallya good idea.
 
-If you do not provide legal s3 credentials, the tools will fall back to localhost publishing instead. Simply hit enter when prompted for the the s3 key and secret if you don't have, or want to use, real S3 AWS credentials.
+If you do not provide legal s3 credentials, the tools will fall back to localhost publishing instead.
 
 4. --skipclone
 5. --skipnpm
