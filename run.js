@@ -142,7 +142,7 @@ function spawnMongo() {
       setTimeout(function() {
         // clear ES index to prevent pollution:
         batchExec([
-          "curl -XDELETE 'http://127.0.0.1:9200/makes'"
+          "curl -X DELETE http://127.0.0.1:9200/makes"
         ], function () {
           console.log();
           setTimeout(spawnMongo, 1000);

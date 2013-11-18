@@ -188,9 +188,10 @@ function runInstaller(runtime, commandStrings) {
           "git checkout master",
           "git submodule sync",
           "git submodule update --init --recursive",
-          "git remote rename origin mozilla",
-          "git remote add origin git@github.com:" + username + "/" + repo + ".git",
-        ]);
+          "git remote rename origin mozilla"]);
+        if (username !== '') {
+          commands.push("git remote add origin git@github.com:" + username + "/" + repo + ".git");
+        }
         batchExec(commands, function() {
           process.chdir("..");
           tryNext();
@@ -280,22 +281,11 @@ function getRunTime() {
         runInstaller(runtime, commandStrings);
       };
 
-      // do we still need git username and s3 key/secret combinations?
-      if (!runtime.username || !runtime.s3key || !runtime.s3secret) {
-        console.log("Please specify your git and AWS credentials:");
-        var prompt = require("prompt");
-        prompt.start();
-        prompt.get(['username', 's3key', 's3secret'], writeEnv);
-      }
-
-      // we got the user/pass information from the runtime arguments
-      else {
-        writeEnv(null, {
-          username: runtime.username,
-          s3key: runtime.s3key,
-          s3secret: runtime.s3secret
-        });
-      }
+      // it's a bit odd that there's no 'default' for argv entries
+      if(!runtime.username) { runtime.username = ''; }
+      if(!runtime.s3key)    { runtime.s3key    = ''; }
+      if(!runtime.s3secret) { runtime.s3secret = ''; }
+      writeEnv(null, runtime);
     }
 
     // we already had an .env file

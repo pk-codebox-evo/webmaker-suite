@@ -19,3 +19,4 @@ webmaker.org
 webmaker-profile
 webmaker-profile-service
 .env
+.DS_Store
