@@ -254,7 +254,7 @@ function getRunTime() {
       npm = commandStrings.npm,
       commands = [
         "rm -rf node_modules",
-        npm + " install --no-bin-links",
+        npm + " install --no-bin-links --allow-root",
         npm + " cache clean"
       ];
 
