@@ -14,9 +14,12 @@ var fs = require("fs"),
     npm = require("./lib/commandstrings"),
     repos = require("./lib/repos")(npm),
     batchExec = require("./lib/batch").batchExec,
-    reset = [
-      "git checkout -B master mozilla/master"
-    ];
+    reset = [];
+
+if(process.argv.indexOf("--fetch")>-1) {
+  reset.push("git fetch mozilla");
+}
+reset.push("git checkout -B master mozilla/master");
 
 function updateRepos(repositories) {
   if (repositories.length === 0) {
