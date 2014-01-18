@@ -1,11 +1,11 @@
 # Webmaker Suite Vagrant Setup Guide
 
 ## Specifications
-* This is running ubuntu 12.04 precise 64bit, you need a 64bit computer to use this image.
+* This is running ubuntu 12.04 precise 64bit, so you will need a 64bit computer to use this image.
 * This is using 10gen-mongo, and elasticsearch 0.95.0.
-* NOTE: This is in alpha, please be patient and submit bugs in bugzilla to webmaker :: devops or by email to jp@mozillafoundation.org
-
 * App files are stored in /home/vagrant/webmaker-suite
+
+* NOTE: This is in alpha, please be patient and submit bugs in bugzilla to webmaker :: devops or by email to jp@mozillafoundation.org
 
 ## Preflight
 
@@ -19,7 +19,7 @@ Make sure you have the following prerequisites installed:
 
 **Step 2**: In your terminal.app or cmd.exe window, cd to the directory you placed the Vagrantfile in (/Users/myusername/vagrant/webmaker-suite on MacOSX in the example above) and run the command vagrant up  (Note: this may download a file ~1.7gb, so this may take some time.)
 
-**Step 3**: After the vagrant instances has completed , issue the command vagrant ssh into your terminal.app or cmd.exe window
+**Step 3**: After the vagrant instance has completed importing and starting, issue the command vagrant ssh into your terminal.app or cmd.exe window
 
 **Step 4**: (Slightly optional) Use the webmaker-suite/add-remote.js to point the github remote repo to a fork in your account and AWS secrets.  To update webmaker-suite (lengthy process) use the update-webmaker.js script
 
