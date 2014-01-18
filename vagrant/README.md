@@ -5,6 +5,7 @@
 * This is using 10gen-mongo, and elasticsearch 0.95.0.
 * NOTE: This is in alpha, please be patient and submit bugs in bugzilla to webmaker :: devops or by email to jp@mozillafoundation.org
 
+* App files are stored in /home/vagrant/webmaker-suite
 
 ## Preflight
 
