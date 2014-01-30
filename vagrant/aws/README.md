@@ -1,9 +1,9 @@
 # Webmaker Suite Vagrant for AWS Setup Guide
 
 ## Specifications
-* This is running ubuntu 12.04 precise 64bit, so you will need a 64bit computer to use this image.
+* This is running ubuntu 12.04 precise 64bit on AWS.
 * This is using 10gen-mongo, and elasticsearch 0.95.0.
-* App files are stored in /home/vagrant/webmaker-suite
+* App files are stored in /home/ubuntu/webmaker-suite
 
 
 * NOTE: This is in alpha, please be patient and submit bugs in bugzilla to webmaker :: devops or by email to jp@mozillafoundation.org
@@ -36,15 +36,8 @@ vagrant up --provider=aws
 
 **Step 7**: (Slightly optional) Use the webmaker-suite/add-remote.js to point the github remote repo to a fork in your account and AWS secrets.  To update webmaker-suite (lengthy process) use the update-webmaker.js script
 
-**Step 8**: Issue the command ./start-ebmaker-suite.sh from within the running vagrant instance you have ssh'd into
-This will start all relevant processes.  You will be able to access them via the following urls:
-  * http://HOST-URL:3000 - login.webmaker.org
-  * http://HOST-URL:3500 - thimble.webmaker.org
-  * http://HOST-URL:5000 - makeapi
-  * http://HOST-URL:5050 - htmlsanitizer.org
-  * http://HOST-URL:7777 - webmaker.org
-  * http://HOST-URL:8888 - popcorn.webmaker.org
-  * http://HOST-URL:12416 - goggles.webmaker.org
+**Step 8**: Issue the command ./start-webmaker-suite.sh from within the running vagrant instance you have ssh'd into
+This will start all relevant processes.
 
 ## Updating the suite
 
