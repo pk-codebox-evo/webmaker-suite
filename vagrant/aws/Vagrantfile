@@ -1,0 +1,34 @@
+Vagrant.configure("2") do |config|
+
+# Name of the box you are going to use.
+  config.vm.box = "webmakersuite-aws"
+
+# Keypair to access AWS.
+# Note: For MOFO employees, keypairname is mofo-vagrant-webmakersuite
+
+  config.vm.provider :aws do |aws, override|
+    aws.access_key_id = "AKAI......"
+    aws.secret_access_key = "SECRETACCESSKEY"
+    aws.keypair_name = "KEYPAIR NAME"
+
+# Define the region where an AMI available
+    aws.availability_zone="us-east-1c"
+    aws.region="us-east-1"
+
+# Define the type of instance
+   aws.instance_type="m1.small"
+
+# An AMI of Ubuntu 12.04 (available in US-WEST-2 region)
+   aws.ami = "ami-e7e1df8e"
+
+# Specify Security group name which you have to create at AWS
+# Note: for MOFO employees, this will be webmakersuite-vagrant-ec2-sg
+  aws.security_groups="security-group-name"
+
+# Path to the keypair
+    override.ssh.username = "ubuntu"
+    override.ssh.private_key_path = "/path/to/your/private/key.pem"
+
+
+end
+end
