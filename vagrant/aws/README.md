@@ -13,7 +13,7 @@
 Make sure you have the following prerequisites installed:
 
 * vagrant (http://www.vagrantup.com/downloads.html)
-* vagrant AWS plugin.  With vagrant installed, simply run vagrant plugin install vagrant-aws
+* vagrant AWS plugin.  With vagrant installed, simply run `vagrant plugin install vagrant-aws`
 * You will need an AWS account, your AWS keys/secret keys, and an AWS keypair (ssh)
 * You will need to create a security group which allows the following ports:  3000, 3500, 5000, 5050, 7777, 8888, 9200, 12416, and 27017
 
