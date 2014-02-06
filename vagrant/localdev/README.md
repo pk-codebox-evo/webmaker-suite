@@ -11,15 +11,16 @@
 
 Make sure you have the following prerequisites installed:
 
+* VirtualBox (https://www.virtualbox.org/wiki/Downloads)
 * vagrant (http://www.vagrantup.com/downloads.html)
 
 ## Steps after preflight
 
 **Step 1**: Place this Vagrantfile in a directory you want to run your webmaker-suite dev server from. (for example, /Users/myusername/vagrant/webmaker-suite on MacOSX)
 
-**Step 2**: In your terminal.app or cmd.exe window, cd to the directory you placed the Vagrantfile in (/Users/myusername/vagrant/webmaker-suite on MacOSX in the example above) and run the command vagrant up  (Note: this may download a file ~1.7gb, so this may take some time.)
+**Step 2**: In your terminal.app or cmd.exe window, cd to the directory you placed the Vagrantfile in (/Users/myusername/vagrant/webmaker-suite on MacOSX in the example above) and run the command `vagrant up`  (Note: this may download a file ~1.7gb, so this may take some time.)
 
-**Step 3**: After the vagrant instance has completed importing and starting, issue the command vagrant ssh into your terminal.app or cmd.exe window
+**Step 3**: After the vagrant instance has completed importing and starting, issue the command `vagrant ssh` into your terminal.app or cmd.exe window
 
 **Step 4**: (Slightly optional) Use the webmaker-suite/add-remote.js to point the github remote repo to a fork in your account and AWS secrets.  To update webmaker-suite (lengthy process) use the update-webmaker.js script
 
