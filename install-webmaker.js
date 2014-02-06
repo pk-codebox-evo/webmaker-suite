@@ -47,7 +47,8 @@ function runInstaller(runtime, commandStrings) {
           return '';
         return username;
       }(gitOptions)),
-      repos = require("./lib/repos")(commandStrings);
+      repos = require("./lib/repos")(commandStrings),
+      shallowclone = runtime.fullclone ? "" : " --depth 1";
 
   // Our list of apps that belong to the Webmaker Suite
   // This list will become a middleware list instead, so
@@ -175,7 +176,7 @@ function runInstaller(runtime, commandStrings) {
       var repo = repositories.pop(),
           repoURL = "https://github.com/mozilla/" + repo + ".git",
           rm = "rm -rf " + repo,
-          clone = "git clone " + repoURL,
+          clone = "git clone " + repoURL + shallowclone,
           commands = (runtime.skipclone ? [] : [rm, clone]);
       if(!runtime.skipclone) {
         console.log("\ncloning " + repo);
@@ -187,7 +188,7 @@ function runInstaller(runtime, commandStrings) {
         var commands = (runtime.skipclone ? [] : [
           "git checkout master",
           "git submodule sync",
-          "git submodule update --init --recursive",
+          "git submodule update --init --recursive" + shallowclone,
           "git remote rename origin mozilla"]);
         if (username !== '') {
           commands.push("git remote add origin git@github.com:" + username + "/" + repo + ".git");
@@ -240,6 +241,12 @@ function getRunTime() {
     type: 'string',
     description: 'Skip all \'npm install\' and \'npm cache clean\' steps',
     example: "'node install --skipnpm'"
+  });
+  argv.option({
+      name: 'fullclone',
+      type: 'string',
+      description: 'Perform a clone with full commit history, rather than a shallow (i.e. latest-commits-only) clone',
+      example: 'node install --fullclone'
   });
   return argv.run().options;
 }

@@ -47,6 +47,10 @@ If you do not provide legal s3 credentials, the tools will fall back to localhos
 
 these will skip the cloning and npm install processes, respectively, in case you need to only run certain parts of the installer.
 
+6. --fullclone
+
+This will do a full clone of all repositories and their submodules for those who desire having that history available, otherwise it performs a shallow clone of all repositories and their submodules.
+
 **Step 3**: Go make some coffee, this'll run for a while (around 15 minutes, but depending on your machine and internet connection, anywhere between 10 and 20 minutes)
 
 After installation completes, the whole suite can be fired up with `node run` (read the next section before running it, though. There are some details you need to know before you type those two words).
@@ -55,7 +59,7 @@ Note that this will pipe all output from everything into the same console, so th
 
 ## running the suite
 
-`node run` will run all apps in the webmaker suite. It can take two runtime options:
+`node run` will run all apps in the webmaker suite. It can take three runtime options:
 
 1. --noes
 2. --nomongo
@@ -83,6 +87,12 @@ When you call `node run` on Windows for the first time, it is entirely possible 
 8. `npm update`
 9. `bower install`
 10. `bower update`
+
+It can take the following runtime options:
+
+1. --fullclone
+
+Which allows the update to pull in all history for each repository and their submodules. If not provided it will do a shallow clone of all repositories and their submodules.
 
 ## Resetting the suite to `master`
 
