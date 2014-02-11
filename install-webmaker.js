@@ -212,34 +212,34 @@ function runInstaller(runtime, commandStrings) {
 function getRunTime() {
   var argv = require("argv");
   argv.option({
-      name: 'username',
-      type: 'string',
-      description: 'Username for git',
-      example: "'node install --username=username"
+    name: 'username',
+    type: 'string',
+    description: 'Username for git',
+    example: "'node install --username=username"
   });
   argv.option({
-      name: 's3key',
-      type: 'string',
-      description: 'API key for Amazon Web Services\' S3',
-      example: "'node install --s3key=abcdefg'"
+    name: 's3key',
+    type: 'string',
+    description: 'API key for Amazon Web Services\' S3',
+    example: "'node install --s3key=abcdefg'"
   });
   argv.option({
-      name: 's3secret',
-      type: 'string',
-      description: 'Secret key for Amazon Web Services\' S3',
-      example: "'node install --s3key=abcdefg --s3secret=123456'"
+    name: 's3secret',
+    type: 'string',
+    description: 'Secret key for Amazon Web Services\' S3',
+    example: "'node install --s3key=abcdefg --s3secret=123456'"
   });
   argv.option({
-      name: 'skipclone',
-      type: 'string',
-      description: 'Skip all \'git clone\' steps',
-      example: "'node install --skipclone'"
+    name: 'skipclone',
+    type: 'string',
+    description: 'Skip all \'git clone\' steps',
+    example: "'node install --skipclone'"
   });
   argv.option({
-      name: 'skipnpm',
-      type: 'string',
-      description: 'Skip all \'npm install\' and \'npm cache clean\' steps',
-      example: "'node install --skipnpm'"
+    name: 'skipnpm',
+    type: 'string',
+    description: 'Skip all \'npm install\' and \'npm cache clean\' steps',
+    example: "'node install --skipnpm'"
   });
   return argv.run().options;
 }
