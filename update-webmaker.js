@@ -7,26 +7,26 @@ console.log("=======================================");
  */
 function getRunTime() {
   var argv = require("argv");
-  /*
   argv.option({
-      name: 'argname',
+      name: 'fullclone',
       type: 'string',
-      description: 'Argument description',
-      example: "'node update --argname'"
+      description: 'Perform a clone with full commit history, rather than a shallow (i.e. latest-commits-only) clone',
+      example: 'node install --fullclone'
   });
-  */
   return argv.run().options;
 }
 
 var fs = require("fs"),
+    runtime = getRunTime(),
     npm = require("./lib/commandstrings"),
     repos = require("./lib/repos")(npm),
     batchExec = require("./lib/batch").batchExec,
+    shallowclone = runtime.fullclone ? "" : " --depth 1",
     update = [
       "git fetch mozilla",
       "git checkout -B master mozilla/master",
       "git submodule sync",
-      "git submodule update --init --recursive"
+      "git submodule update --init --recursive" + shallowclone
     ];
 
 function updateRepos(repositories) {
