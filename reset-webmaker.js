@@ -19,7 +19,7 @@ var fs = require("fs"),
 if(process.argv.indexOf("--fetch")>-1) {
   reset.push("git fetch mozilla");
 }
-reset.push("git checkout -B master mozilla/master");
+reset.push("git checkout -B master mozilla/master -f");
 
 function updateRepos(repositories) {
   if (repositories.length === 0) {
