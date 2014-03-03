@@ -19,7 +19,7 @@ function addRemote(repositories) {
       app = repos[appName];
       commands = [];
 
-  commands.push("git remote add " + remotename + " git@github.com:" + username + "/" + appName + ".git");
+  commands.push("git remote add " + remotename + " https://github.com/" + username + "/" + appName + ".git");
   commands.push("git fetch " + username + " --unshallow");
   commands.push("git fetch " + username);
 
