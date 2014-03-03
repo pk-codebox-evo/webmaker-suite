@@ -8,6 +8,7 @@ makeapi-client
 mongo
 mox-server
 node_modules
+node-rtltr
 node-webmaker-i18n
 node-webmaker-loginapi
 node-webmaker-postalservice
@@ -15,7 +16,11 @@ popcorn.webmaker.org
 thimble.webmaker.org
 togetherjs
 towtruck
+vagrant/localdev/package.box
+vagrant/localdev/webmaker-suite
 webmaker.org
+webmaker-auth
+webmaker-auth-client
 webmaker-profile
 webmaker-profile-service
 .env
