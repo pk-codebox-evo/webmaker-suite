@@ -2,14 +2,6 @@ console.log("\n===============================================");
 console.log("Adding remotes to  all apps in the Webmaker suite");
 console.log("=================================================");
 
-/**
- * Runtime argument parsing
- */
-function getRunTime() {
-  var argv = require("argv");
-  return argv.run().options;
-}
-
 var fs = require("fs"),
     npm = require("./lib/commandstrings").npm,
     repos = require("./lib/repos")(npm),
