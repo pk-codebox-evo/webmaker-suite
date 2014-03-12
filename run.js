@@ -20,6 +20,12 @@ function getRunTime() {
       example: "'node run --noes'"
   });
   argv.option({
+      name: 'cleares',
+      type: 'boolean',
+      description: 'Clear the elasticsearch index when starting the suite, which makes webmaker think there are no makes.',
+      example: "'node run --cleares'"
+  });
+  argv.option({
       name: 'exclude',
       type: 'list.string',
       description: 'Do not start specific apps. For convenience, apps named "xyz.webmaker.org" can be indicated as just "xyz".',
@@ -140,13 +146,16 @@ function spawnMongo() {
     // don't start Mongo until ES has started up.
     if(data.toString().indexOf("started")>-1) {
       setTimeout(function() {
+        if(runtime.cleares) {
         // clear ES index to prevent pollution:
-        batchExec([
-          "curl -X DELETE http://127.0.0.1:9200/makes"
-        ], function () {
-          console.log();
-          setTimeout(spawnMongo, 1000);
-        });
+          batchExec([
+            "curl -X DELETE http://127.0.0.1:9200/makes"
+          ], function () {
+            console.log();
+            setTimeout(spawnMongo, 1000);
+          });
+        }
+        else { spawnMongo(); }
       }, 1000);
     }
   });
