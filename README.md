@@ -59,11 +59,14 @@ Note that this will pipe all output from everything into the same console, so th
 
 ## running the suite
 
-`node run` will run all apps in the webmaker suite. It can take three runtime options:
+`node run` will run all apps in the webmaker suite. It can take four runtime options:
 
 1. --noes
-2. --nomongo
-3. --exclude=[comma separated list of names]
+2. --cleares
+3. --nomongo
+4. --exclude=[comma separated list of names]
+
+The `--cleares` flag will clear the elasticsearch index for makes, so webmaker will have no knowledge of any published makes, without wiping the MongoDB with actual make data. To wipe the MongoDB, simply delete the `./mongo` directory (`rm -rf mongo` will do the trick).
 
 The `--exclude` flag takes a comma separated list of app names that should not be started up. If you wish to test only the MakeAPI, for instance, you could issue `node run --exclude=goggles,thimble,popcorn,login,webmaker.org,htmlsanitizer.org`. Note that, for convenience, app names that are of the form "xyz.webmaker.org" can be excluded using only the "xyz" part of the name.
 
