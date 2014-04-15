@@ -17,6 +17,7 @@
  */
 var batchExec = require("./lib/batch").batchExec,
     checkError = require("./lib/batch").checkError,
+    progressive = require("./lib/progressive"),
     fs = require("fs"),
     runtime;
 
@@ -26,9 +27,9 @@ var batchExec = require("./lib/batch").batchExec,
 function runInstaller(runtime, commandStrings) {
   console.log("Finished bootstrapping.");
 
-  console.log("\n===================================================================");
+  console.log("\n=======================================================================");
   console.log("Starting installation. You might want to go make a cup of coffee...");
-  console.log("===================================================================");
+  console.log("=======================================================================");
 
   // Installation requirements
   var habitat = (function() {
@@ -50,11 +51,8 @@ function runInstaller(runtime, commandStrings) {
       repos = require("./lib/repos")(commandStrings),
       shallowclone = runtime.fullclone ? "" : " --depth 1";
 
-  // Our list of apps that belong to the Webmaker Suite
-  // This list will become a middleware list instead, so
-  // that it's easier to manipulate, and easier to require
-  // in other apps (like for "node run").
-  var repositories = Object.keys(repos);
+  // if we need to fastforward, we need to know these two values
+  var markrepo="", markaction="", markreduced;
 
   /**
    * Tweak all .env files that require AWS credentials
@@ -121,9 +119,9 @@ function runInstaller(runtime, commandStrings) {
       console.log("setting AWS credentials.");
       setupAWS(repositories = Object.keys(repos), function() {
         console.log("\nInstallation complete.");
+        progressive.finish();
         process.exit(0);
       });
-
     });
   };
 
@@ -131,10 +129,26 @@ function runInstaller(runtime, commandStrings) {
    * Run npm install + npm cache clean for a repository.
    */
   function installModule(repositories, next) {
+
+    if (runtime.fastforward && markrepo) {
+      if (markaction === "npm") {
+        do {
+          if(repositories.pop() === markrepo) {
+            repositories.push(markrepo);
+            break;
+          }
+        } while (repositories.length > 0);
+        markrepo = "";
+      }
+      else { return setTimeout(next, 10); }
+    }
+
     if (repositories.length === 0) {
       return setTimeout(next, 10);
     };
+
     var repo = repositories.pop();
+    progressive.mark(repo, "npm");
     console.log("resolving module dependencies for "+repo);
     process.chdir(repo);
     batchExec(repos[repo].install,
@@ -166,7 +180,21 @@ function runInstaller(runtime, commandStrings) {
   function tryNext(error, stdout, stderr) {
     checkError(error, stdout, stderr);
 
-    // done cloning - set up the .env files
+    // do we need to fastforward past cloning?
+    if(runtime.fastforward && markrepo) {
+      if(markaction === "clone") {
+        do {
+          if(repositories.pop() === markrepo) {
+            repositories.push(markrepo);
+            break;
+          }
+        } while (repositories.length > 0);
+        markrepo = "";
+      }
+      else { return installModules(); }
+    }
+
+    // did we finish cloning without a fastforward?
     if (repositories.length === 0) {
       installModules();
     }
@@ -178,6 +206,7 @@ function runInstaller(runtime, commandStrings) {
           rm = "rm -rf " + repo,
           clone = "git clone " + repoURL + shallowclone,
           commands = (runtime.skipclone ? [] : [rm, clone]);
+      progressive.mark(repo, "clone");
       if(!runtime.skipclone) {
         console.log("\ncloning " + repo);
       }
@@ -204,6 +233,40 @@ function runInstaller(runtime, commandStrings) {
   /**
    * clone all the repositories
    */
+
+  // Our list of apps that belong to the Webmaker Suite
+  // This list will become a middleware list instead, so
+  // that it's easier to manipulate, and easier to require
+  // in other apps (like for "node run").
+  var repositories = Object.keys(repos);
+
+  // do we need to fastforward the installation?
+  var mark = progressive.getCurrent();
+
+  if(runtime.fastforward) {
+    if(mark) {
+      if(mark === "installed") {
+				console.log("\n=======================================================================");
+				console.log("Nothing to install: .progress file indicates a full installation");
+				console.log("=======================================================================");
+				process.exit(0);
+      }
+			var _ = mark.split(":");
+			markrepo = _[0],
+			markaction = _[1];
+			console.log("\n=======================================================================");
+			console.log("Fast-forwarding the install to the "+markaction+" step for "+markrepo);
+			console.log("=======================================================================");
+    }
+  }
+  else if (mark) {
+    console.log("\n !!!WARNING!!! \n");
+    console.log("A progress file found, but no --fastforward flag was used. Either delete");
+    console.log("the .progress file, or run [node install-webmaker.js --fastforward] instead");
+    console.log("\nExiting...\n\n");
+    process.exit(1);
+  }
+
   tryNext();
 }
 
@@ -248,6 +311,12 @@ function getRunTime() {
       description: 'Perform a clone with full commit history, rather than a shallow (i.e. latest-commits-only) clone',
       example: 'node install --fullclone'
   });
+  argv.option({
+      name: 'fastforward',
+      type: 'string',
+      description: 'resume an install from where the install process was interrupted last time (if it was interrupted or crashed)',
+      example: 'node install --fastforward'
+  });
   return argv.run().options;
 }
 
@@ -259,7 +328,7 @@ function getRunTime() {
 
   var commandStrings = require("./lib/commandstrings"),
       npm = commandStrings.npm,
-      commands = [
+      commands = (process.argv.indexOf("--fastforward")>-1) ? [] : [
         "rm -rf node_modules",
         npm + " install --no-bin-links --allow-root",
         npm + " cache clean"
