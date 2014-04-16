@@ -76,6 +76,10 @@ The `--exclude` flag takes a comma separated list of app names that should not b
 
 These mostly exist to prevent double-starts for elastic search and mongodb, if you already run these on your machine, since `node run` will try to fire these up for you.
 
+### Check your firewall
+
+If you are running the suite and publishing makes, you will need to make sure your firewall is not blocking certain ports. In order to replicate the same kind of `username.localhost` functionality that you get on webmaker's `username.makes.org`, we use `xip.io` to do subdomain forwarding. As such, when you publish you will get preview links such as `http://webmakerman.127.0.0.1.xip.io:4000/popcorn/1`, which requires port `4000` to not be blocked by your firewall. 
+
 ### First run on Windows
 
 When you call `node run` on Windows for the first time, it is entirely possible that you get Windows Firewall notices for java, python, elastic search, mongodb, and Node.js... You'll want to allow all of these on the private network at least (and probably public too, but that's up to you), but these notices WILL interfere with the first run. After allowing everything and the console stops spewing output, hit `ctrl-c` twice, then run `node run` again. There will be no Windows Firewal requests this time round, and the suite should start up without any problems.
