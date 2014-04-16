@@ -34,24 +34,27 @@ In addition to having special instructions for installing mongodb and elastic se
 
 The `node install-webmaker` command can take several runtime options:
 
-1) --username=...
-2) --s3key=...
-3) --s3secret=...
+1) `--username=...`
+
+2) `--s3key=...`
+
+3) `--s3secret=...`
 
 These do the obvious thing. If you do not use these, and do not have an .env file (which initially you won't), they will default to empty strings. Not specifying the username means you will not be given an `origin` remote in each repository, so running the install with a username is generallya good idea.
 
 If you do not provide legal s3 credentials, the tools will fall back to localhost publishing instead.
 
-4) --skipclone
-5) --skipnpm
+4) `--skipclone`
+
+5) `--skipnpm`
 
 these will skip the cloning and npm install processes, respectively, in case you need to only run certain parts of the installer.
 
-6) --fullclone
+6) `--fullclone`
 
 This will do a full clone of all repositories and their submodules for those who desire having that history available, otherwise it performs a shallow clone of all repositories and their submodules.
 
-7) --fastforward
+7) `--fastforward`
 
 If, for some reason, the installation process crashes (due to a missing dependency for instance), or is interrupted (through ctrl-c or the like), the `--fastforward` flag will make the installation resume form the point it was interrupted last time.
 
@@ -101,11 +104,11 @@ When you call `node run` on Windows for the first time, it is entirely possible 
 
 It can take the following runtime options:
 
-1) --fullclone
+1) `--fullclone`
 
 Which allows the update to pull in all history for each repository and their submodules. If not provided it will do a shallow clone of all repositories and their submodules.
 
-2) --fastforward
+2) `--fastforward`
 
 If, for some reason, the update process crashes (due to a missing dependency for instance), or is interrupted (through ctrl-c or the like), the `--fastforward` flag will make the update resume form the point it was interrupted last time.
 
