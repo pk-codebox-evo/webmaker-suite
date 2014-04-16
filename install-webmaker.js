@@ -17,7 +17,7 @@
  */
 var batchExec = require("./lib/batch").batchExec,
     checkError = require("./lib/batch").checkError,
-    progressive = require("./lib/progressive"),
+    progressive = require("./lib/progressive")(),
     fs = require("fs"),
     runtime;
 
@@ -279,43 +279,43 @@ function getRunTime() {
     name: 'username',
     type: 'string',
     description: 'Username for git',
-    example: "'node install --username=username"
+    example: "'node install-webmaker --username=username"
   });
   argv.option({
     name: 's3key',
     type: 'string',
     description: 'API key for Amazon Web Services\' S3',
-    example: "'node install --s3key=abcdefg'"
+    example: "'node install-webmaker --s3key=abcdefg'"
   });
   argv.option({
     name: 's3secret',
     type: 'string',
     description: 'Secret key for Amazon Web Services\' S3',
-    example: "'node install --s3key=abcdefg --s3secret=123456'"
+    example: "'node install-webmaker --s3key=abcdefg --s3secret=123456'"
   });
   argv.option({
     name: 'skipclone',
     type: 'string',
     description: 'Skip all \'git clone\' steps',
-    example: "'node install --skipclone'"
+    example: "'node install-webmaker --skipclone'"
   });
   argv.option({
     name: 'skipnpm',
     type: 'string',
     description: 'Skip all \'npm install\' and \'npm cache clean\' steps',
-    example: "'node install --skipnpm'"
+    example: "'node install-webmaker --skipnpm'"
   });
   argv.option({
       name: 'fullclone',
       type: 'string',
       description: 'Perform a clone with full commit history, rather than a shallow (i.e. latest-commits-only) clone',
-      example: 'node install --fullclone'
+      example: 'node install-webmaker --fullclone'
   });
   argv.option({
       name: 'fastforward',
       type: 'string',
       description: 'resume an install from where the install process was interrupted last time (if it was interrupted or crashed)',
-      example: 'node install --fastforward'
+      example: 'node install-webmaker --fastforward'
   });
   return argv.run().options;
 }
