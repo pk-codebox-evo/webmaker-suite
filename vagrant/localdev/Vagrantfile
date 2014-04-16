@@ -11,14 +11,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
 
+
   # This Vagrantfile is specifically for the webmaker suite of apps, cloned from https://github.com/mozilla/webmaker-suite
-  # As of 1/17/14, this is in rough draft, please submit
+  # This is in beta, please submit
   # bugs via webmaker :: devops, or email jp@mozillafoundation.org
-  config.vm.box = "webmakersuitev3"
+  config.vm.box = "webmakersuite"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-  config.vm.box_url = "https://dl.dropboxusercontent.com/u/2273146/webmakersuitev3.box"
+  config.vm.box_url = "http://stuff.webmaker.org/devtools/webmakersuite.box"
 
   # Create forwarded port mappings
   # Webmaker apps have the following port assignments/urls
