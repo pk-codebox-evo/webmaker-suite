@@ -53,7 +53,7 @@ This will do a full clone of all repositories and their submodules for those who
 
 7. --fastforward
 
-If, for some reason, the installation process crashes (due to a missing dependency for instance), or is interrupted (through ctrl-c or the like), the `--fastforward` flag will make the installation resume form the point it was interrupted at last time.
+If, for some reason, the installation process crashes (due to a missing dependency for instance), or is interrupted (through ctrl-c or the like), the `--fastforward` flag will make the installation resume form the point it was interrupted last time.
 
 **Step 3**: Go make some coffee, this'll run for a while (around 15 minutes, but depending on your machine and internet connection, anywhere between 10 and 20 minutes)
 
@@ -78,7 +78,7 @@ These mostly exist to prevent double-starts for elastic search and mongodb, if y
 
 ### Check your firewall
 
-If you are running the suite and publishing makes, you will need to make sure your firewall is not blocking certain ports. In order to replicate the same kind of `username.localhost` functionality that you get on webmaker's `username.makes.org`, we use `xip.io` to do subdomain forwarding. As such, when you publish you will get preview links such as `http://webmakerman.127.0.0.1.xip.io:4000/popcorn/1`, which requires port `4000` to not be blocked by your firewall. 
+If you are running the suite and publishing makes, you will need to make sure your firewall is not blocking certain ports. In order to replicate the same kind of `username.localhost` functionality that you get on webmaker's `username.makes.org`, we use `xip.io` to do subdomain forwarding. As such, when you publish you will get preview links such as `http://webmakerman.127.0.0.1.xip.io:4000/popcorn/1`, which requires port `4000` to not be blocked by your firewall.
 
 ### First run on Windows
 
@@ -104,6 +104,11 @@ It can take the following runtime options:
 1. --fullclone
 
 Which allows the update to pull in all history for each repository and their submodules. If not provided it will do a shallow clone of all repositories and their submodules.
+
+2. --fastforward
+
+If, for some reason, the update process crashes (due to a missing dependency for instance), or is interrupted (through ctrl-c or the like), the `--fastforward` flag will make the update resume form the point it was interrupted last time.
+
 
 ## Resetting the suite to `master`
 
