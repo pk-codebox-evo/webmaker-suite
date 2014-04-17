@@ -26,13 +26,13 @@ Make sure you have the following prerequisites installed:
 
 **Step 5**: Issue the command ./start-webmaker.sh from within the running vagrant instance you have ssh'd into
 This will start all relevant processes.  You will be able to access them via the following urls:
-  * http://localhost:3000 - login.webmaker.org
-  * http://localhost:3500 - thimble.webmaker.org
-  * http://localhost:5000 - makeapi
-  * http://localhost:5050 - htmlsanitizer.org
-  * http://localhost:7777 - webmaker.org
-  * http://localhost:8888 - popcorn.webmaker.org
-  * http://localhost:12416 - goggles.webmaker.org
+  * http://127.0.0.1:3000 - login.webmaker.org
+  * http://127.0.0.1:3500 - thimble.webmaker.org
+  * http://127.0.0.1:5000 - makeapi
+  * http://127.0.0.1:5050 - htmlsanitizer.org
+  * http://127.0.0.1:7777 - webmaker.org
+  * http://127.0.0.1:8888 - popcorn.webmaker.org
+  * http://127.0.0.1:12416 - goggles.webmaker.org
 
 ## Updating the suite
 
@@ -57,11 +57,11 @@ This will start all relevant processes.  You will be able to access them via the
 
 When running the suite, the following locations are available:
 
-* http://localhost:3000 - login.webmaker.org
-* http://localhost:3500 - thimble.webmaker.org
-* http://localhost:5000 - makeapi
-* http://localhost:5050 - htmlsanitizer.org
-* http://localhost:7777 - webmaker.org
-* http://localhost:8888 - popcorn.webmaker.org
-* http://localhost:12416 - goggles.webmaker.org
+* http://127.0.0.1:3000 - login.webmaker.org
+* http://127.0.0.1:3500 - thimble.webmaker.org
+* http://127.0.0.1:5000 - makeapi
+* http://127.0.0.1:5050 - htmlsanitizer.org
+* http://127.0.0.1:7777 - webmaker.org
+* http://127.0.0.1:8888 - popcorn.webmaker.org
+* http://127.0.0.1:12416 - goggles.webmaker.org
 
