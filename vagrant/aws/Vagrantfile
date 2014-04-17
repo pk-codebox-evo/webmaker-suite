@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
    aws.instance_type="m1.small"
 
 # An AMI of Ubuntu 12.04 (available in US-WEST-2 region)
-   aws.ami = "ami-e7e1df8e"
+   aws.ami = "ami-a75149ce"
 
 # Specify Security group name which you have to create at AWS
 # Note: for MOFO employees, this will be webmakersuite-vagrant-ec2-sg

@@ -34,7 +34,7 @@ vagrant up --provider=aws
 
 **Step 6**: After the vagrant instance has completed importing and starting, issue the command vagrant ssh into your terminal.app or cmd.exe window
 
-**Step 7**: (Slightly optional) Use the webmaker-suite/add-remote.js to point the github remote repo to a fork in your account and AWS secrets.  To update webmaker-suite (lengthy process) use the update-webmaker.js script
+**Step 7**: (Slightly optional) Use the webmaker-suite/add-remote.js to point the github remote repo to a fork in your account and AWS secrets.  Example:  node ./add-remote.js github_username  To update webmaker-suite (lengthy process) use the update-webmaker.js script
 
 **Step 8**: Issue the command ./start-webmaker-suite.sh from within the running vagrant instance you have ssh'd into
 This will start all relevant processes.
