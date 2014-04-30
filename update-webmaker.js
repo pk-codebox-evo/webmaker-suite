@@ -26,7 +26,7 @@ var fs = require("fs"),
     runtime = getRunTime(),
     progressive = require("./lib/progressive")("update"),
     npm = require("./lib/commandstrings"),
-    repos = require("./lib/repos")(npm),
+    repos = require("./lib/repos")(npm)({ "dev": true}),
     batchExec = require("./lib/batch").batchExec,
     shallowclone = runtime.fullclone ? "" : " --depth 1",
     update = [
@@ -55,12 +55,14 @@ function updateRepos(repositories) {
     commands = commands.concat(app.install);
   }
 
-  console.log("\n[" + appName + "]");
-  process.chdir(appName);
-  batchExec(commands, function() {
-    process.chdir("..");
-    updateRepos(repositories);
-  });
+  if (fs.existsSync(appName)) {
+    console.log("\n[" + appName + "]");
+    process.chdir(appName);
+    batchExec(commands, function() {
+      process.chdir("..");
+      updateRepos(repositories);
+    });
+  } else { updateRepos(repositories); }
 }
 
 var mark = progressive.getCurrent();
