@@ -50,11 +50,23 @@ If you do not provide legal s3 credentials, the tools will fall back to localhos
 
 these will skip the cloning and npm install processes, respectively, in case you need to only run certain parts of the installer.
 
-6) `--fullclone`
+6) `--core`
+
+7) `--tools`
+
+8) `--extras`
+
+9) `--dev`
+
+These flags determine how much gets installed. `core` only installs the core services upon which all the other tools depend (login, webmaker.org, makeapi), `tools` installs the tool set (thimble, popcorn, goggles, etc), `extras` installs some projects that currently do not fall under the core or tools heading.
+
+Using the `dev` flag will install the entire suite, and is mostly for full-stack development purposes.
+
+10) `--fullclone`
 
 This will do a full clone of all repositories and their submodules for those who desire having that history available, otherwise it performs a shallow clone of all repositories and their submodules.
 
-7) `--fastforward`
+11) `--fastforward`
 
 If, for some reason, the installation process crashes (due to a missing dependency for instance), or is interrupted (through ctrl-c or the like), the `--fastforward` flag will make the installation resume form the point it was interrupted last time.
 

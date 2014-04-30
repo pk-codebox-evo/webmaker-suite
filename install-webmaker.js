@@ -48,7 +48,7 @@ function runInstaller(runtime, commandStrings) {
           return '';
         return username;
       }(gitOptions)),
-      repos = require("./lib/repos")(commandStrings),
+      repos = require("./lib/repos")(commandStrings)(runtime),
       shallowclone = runtime.fullclone ? "" : " --depth 1";
 
   // if we need to fastforward, we need to know these two values
@@ -317,6 +317,32 @@ function getRunTime() {
       description: 'resume an install from where the install process was interrupted last time (if it was interrupted or crashed)',
       example: 'node install-webmaker --fastforward'
   });
+
+  argv.option({
+      name: 'core',
+      type: 'string',
+      description: 'install the core applications (login, webmaker.org, makeapi)',
+      example: 'node install-webmaker --core'
+  });
+  argv.option({
+      name: 'tools',
+      type: 'string',
+      description: 'install the webmaker tools',
+      example: 'node install-webmaker --core --tools'
+  });
+  argv.option({
+      name: 'extras',
+      type: 'string',
+      description: 'install extras',
+      example: 'node install-webmaker --core --tools --extras'
+  });
+  argv.option({
+      name: 'dev',
+      type: 'string',
+      description: 'install everything. this option is mostly useful for full-stack development',
+      example: 'node install-webmaker --dev'
+  });
+
   return argv.run().options;
 }
 
