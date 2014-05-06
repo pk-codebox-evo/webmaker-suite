@@ -61,7 +61,7 @@ function runInstaller(runtime, commandStrings) {
   function setupAWS(repositories, next) {
     if (repositories.length === 0) {
       return setTimeout(next, 10);
-    };
+    }
     var repo = repositories.pop(),
         aws = repos[repo].aws;
     if (aws) {
@@ -89,7 +89,7 @@ function runInstaller(runtime, commandStrings) {
   function setupEnvironment(repositories, next) {
     if (repositories.length === 0) {
       return setTimeout(next, 10);
-    };
+    }
     var repo = repositories.pop(),
         env = repos[repo].env;
     if (env) {
@@ -123,7 +123,7 @@ function runInstaller(runtime, commandStrings) {
         process.exit(0);
       });
     });
-  };
+  }
 
   /**
    * Run npm install + npm cache clean for a repository.
@@ -145,7 +145,7 @@ function runInstaller(runtime, commandStrings) {
 
     if (repositories.length === 0) {
       return setTimeout(next, 10);
-    };
+    }
 
     var repo = repositories.pop();
     progressive.mark(repo, "npm");
@@ -228,7 +228,7 @@ function runInstaller(runtime, commandStrings) {
         });
       });
     }
-  };
+  }
 
   /**
    * clone all the repositories
