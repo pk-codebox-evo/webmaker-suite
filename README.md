@@ -1,11 +1,5 @@
 # Webmaker Suite bootstrap/installation script
 
-## Visual Guides
-
-The screenshot versions of this README.md can be found at http://mozilla.github.io/webmaker-suite, although right now only the windows version (http://mozilla.github.io/webmaker-suite/windows.html) is available.
-
-If you intend to use the screenshot version, at the very least first read through this README. It takes only a few minutes but will save you literally days of installation headaches after those few minutes.
-
 ## Preflight
 
 Make sure you have the following prerequisites installed:
