@@ -16,6 +16,10 @@ Make sure you have the following prerequisites installed:
 * java - http://www.oracle.com/technetwork/java/javase/downloads/index.html (if not already installed)
 * elastic search - http://www.elasticsearch.org (or through your favourite package manager)
 
+**Unix/Linux users take note:**
+
+Elastic search may not necessarily bind the `elasticsearch` command as a runnable command for your flavour of *n*x. If you have the power to do so, set up a global alias for "elasticsearch" so that any exec/spawn can call it without failing - failing that, you'll have to manually run elasticsearch when you use the suite, and then run the suite with the `--noes` flag.
+
 **Windows and OSX users take note:**
 
 In addition to having special instructions for installing mongodb and elastic search, Windows and OSX need C++ stacks installed for the `sqlite3` library to compile (used in several tools). The instructions on how to do this can be found in the `OS-specific information` section, further down in this readme. Please follow those instructions before moving on to the next step.

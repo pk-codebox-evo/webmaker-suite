@@ -8,5 +8,8 @@
     "prompt": "0.2.11",
     "http-server": "~0.5.5"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "0.4.3"
+  }
 }
