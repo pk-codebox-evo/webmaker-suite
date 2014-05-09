@@ -53,7 +53,7 @@ function getRunTime() {
 var fs = require("fs"),
     batchExec = require("./lib/batch").batchExec,
     commandStrings = require("./lib/commandstrings"),
-    repos = require("./lib/repos")(commandStrings),
+    repos = require("./lib/repos")(commandStrings)({ dev: true }),
     runtime = getRunTime(),
     spawn = require("child_process").spawn;
 
@@ -71,9 +71,16 @@ function run() {
       }
 
       app.run.forEach(function(command) {
+        // due to partial installs, not every dir exists
+        if(!fs.existsSync(appName)) {
+          console.log("> skipping " + appName + " (not installed)")
+          return;
+        }
+
         var args = command.split(' ');
         cmd = args.splice(0,1)[0];
         console.log("> "+command + " ("+appName+")");
+
         process.chdir(appName);
         var sp = spawn(cmd, args);
         process.chdir("..");
