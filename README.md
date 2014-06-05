@@ -18,8 +18,6 @@ Make sure you have the following prerequisites installed:
 
 **Unix/Linux users take note:**
 
-Elastic search may not necessarily bind the `elasticsearch` command as a runnable command for your flavour of *n*x. If you have the power to do so, set up a global alias for "elasticsearch" so that any exec/spawn can call it without failing -
-
 Elastic search may not necessarily bind the `elasticsearch` command as a runnable command for your flavour of *n*x. If you have the power to do so, set up a global alias for "elasticsearch" so that any exec/spawn can call it without failing.  For example, on Ubuntu's default Elasticsearch install, you would issue the following command:
 
   `sudo ln -s /usr/share/elasticsearch/bin/elasticsearch /bin/elasticsearch`
