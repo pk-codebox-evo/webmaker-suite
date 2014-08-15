@@ -189,6 +189,6 @@ With these, install mongodb and elasticsearch using `brew`, and you should be al
 
 Mongodb may have told itself to log to a file, instead of to the console. If it has, starting `mongod` will show you a single line of output stating where it's logging to. If this is all you see when you start up Mongo, open its config file by typing the command `vi /usr/local/etc/mongod.conf`, and remove the logging instruction in that file: remove the `logpath=...` and `logappend = ...` lines.
 
-IF you have never used `vi` before, cursor-navigate to an offending line, then press `d` twice to delete it, or press `u` to undo if you deleted the wrong thing by accicent. To save and quit, type `:`, then `wq`, then hit enter).
+If you have never used `vi` before, cursor-navigate to an offending line, then press `d` twice to delete it, or press `u` to undo if you deleted the wrong thing by accicent. To save and quit, type `:`, then `wq`, then hit enter).
 
 You should now get normal console output when running `mongod`, which is essential for the webmaker-suite to run.
