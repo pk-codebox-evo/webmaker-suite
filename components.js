@@ -1,11 +1,11 @@
 var commandStrings = require("./commandstrings");
 
-module.exports = {
+var components = {
   'Core components' : {
     'Login' : {
       repo: "https://github.com/mozilla/login.webmaker.org.git",
       env: "cp env.sample .env",
-      run: "node app",
+      run: "node app"
     },
     'MakeAPI' : {
       repo: "https://github.com/mozilla/MakeAPI.git",
@@ -38,6 +38,11 @@ module.exports = {
       repo: "https://github.com/mozilla/popcorn.webmaker.org.git",
       env: false,
       run: "node server",
+    },
+    'Mobile Webmaker' : {
+      repo: "https://github.com/mozillafordevelopment/webmaker-app.git",
+      env: false,
+      run: "gulp dev"
     }
   },
   'Additional components': {
@@ -58,3 +63,16 @@ module.exports = {
     },
   }
 };
+
+Object.keys(components).forEach(function(cat) {
+  Object.keys(components[cat]).forEach(function(key) {
+    var component = components[cat][key],
+        repo = component.repo,
+        st = repo.lastIndexOf('/'),
+        ed = repo.lastIndexOf('.git'),
+        dir = repo.substring(st+1, ed);
+    component.dir = dir;
+  });
+});
+
+module.exports = components;

@@ -1,21 +1,23 @@
+var components = require("./components");
+var fs = require("fs-extra");
+
 module.exports = function(program, screenName, label, onconfirm) {
-  var components = require("./components");
+  var menu = program.menu(screenName);
 
-  var menu = program.addMenu(screenName);
-
-  menu.addText(label);
-  menu.addSpacer();
+  menu.text(label);
+  menu.spacer();
 
   Object.keys(components).forEach(function(c) {
-    menu.addText(c);
+    menu.text(c);
     Object.keys(components[c]).forEach(function(k) {
-      menu.addCheckedOption(k);
+      var exists = fs.existsSync(components[c][k].dir);
+      menu.check(k, exists);
     });
-    menu.addSpacer();
+    menu.spacer();
   });
 
-  menu.setConfirm(screenName + " selected components", false, onconfirm);
-  menu.setCancel("Cancel","main");
+  menu.confirm(screenName + " selected components", false, onconfirm);
+  menu.cancel("Cancel","main");
 
   return menu;
 };

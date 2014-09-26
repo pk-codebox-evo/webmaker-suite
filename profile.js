@@ -59,5 +59,14 @@ Profile.prototype = {
 
 module.exports = {
   Profile: Profile,
-  getProfiles: function() { return data.profiles; }
+  getProfiles: function() {
+    return data.profiles;
+  },
+  getRunProfile: function(idx) {
+    if(idx < 0) return false;
+    if (data.profiles.length > idx) {
+      return new Profile(data.profiles[idx]);
+    }
+    return false;
+  }
 };

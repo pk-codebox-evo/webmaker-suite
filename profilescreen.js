@@ -1,27 +1,27 @@
 module.exports = function(program, screenName) {
   var components = require("./components");
   var profiles = require("./profile");
-  var menu = program.addMenu(screenName);
+  var menu = program.menu(screenName);
 
   menu.onLoad = function() {
     var profile = new profiles.Profile();
     menu.reset();
 
-    menu.addText('Which components should this profile use?');
-    menu.addSpacer();
+    menu.text('Which components should this profile use?');
+    menu.spacer();
 
     profile.getCategories().forEach(function(cat) {
-      menu.addText(cat);
+      menu.text(cat);
       profile.getEntries(cat).forEach(function(entry) {
-        menu.addCheckedOption(entry, function(toggle) {
+        menu.check(entry, function(toggle) {
           profile.toggle(cat, entry);
         });
       });
-      menu.addSpacer();
+      menu.spacer();
     });
 
-    menu.setConfirm("Save profile", "main", function(data) { profile.save(); });
-    menu.setCancel("Cancel", "main", function(data) { profile.discard(); });
+    menu.confirm("Save profile", "main", function(data) { profile.save(); });
+    menu.cancel("Cancel", "main", function(data) { profile.discard(); });
   };
 
   return menu;

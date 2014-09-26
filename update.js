@@ -8,9 +8,7 @@ var readlineSync = require('readline-sync');
 module.exports = function(component, callback) {
 
   var repo = component.repo,
-      st = repo.lastIndexOf('/'),
-      ed = repo.lastIndexOf('.git'),
-      dir = repo.substring(st+1, ed);
+      dir = component.dir;
 
   process.chdir(dir);
 
