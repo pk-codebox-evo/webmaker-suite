@@ -1,4 +1,5 @@
 .vagrant
+appmaker
 goggles.webmaker.org
 htmlsanitizer.org
 login.webmaker.org
@@ -40,3 +41,4 @@ webmaker-events-2
 webmaker-events-service
 webmaker-kits
 webmaker-kits-builder
+.profiles

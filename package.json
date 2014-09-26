@@ -1,57 +1,10 @@
 {
   "name": "webmaker-suite",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "repository": "https://github.com/Pomax/webmaker-suite",
   "dependencies": {
-    "argv": "0.0.2",
-    "habitat": "0.4.2",
-    "prompt": "0.2.11",
-    "http-server": "~0.5.5"
-  },
-  "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-jshint": "0.4.3"
-  },
-  "aperture": {
-    "sources": [
-      "login.webmaker.org",
-      "webmaker.org",
-      "MakeAPI",
-      "htmlsanitizer.org",
-      "goggles.webmaker.org",
-      "thimble.webmaker.org",
-      "popcorn.webmaker.org",
-      "togetherjs",
-      "make-valet",
-      "webmaker-events-2",
-      "webmaker-events-service",
-      "webmaker-profile",
-      "webmaker-profile",
-      "webmaker-profile-service",
-      "nav-global",
-      "node-hubble",
-      "lumberyard",
-      "park-warden",
-      "sawmill",
-      "bucheron",
-      "csp-logger",
-      "MakeAPI-Gallery",
-      "makerstrap",
-      "webmaker-kits",
-      "node-webmaker-loginapi",
-      "makeapi-client",
-      "node-webmaker-i18n",
-      "node-webmaker-postalservice",
-      "webmaker-auth",
-      "webmaker-auth-client",
-      "node-rtltr",
-      "web-literacy-client",
-      "webmaker-analytics",
-      "webmaker-download-locales",
-      "webmaker-language-picker",
-      "webmaker-translation-stats",
-      "webmaker-ui",
-      "webmaker-user-client"
-    ]
+    "fs-extra": "^0.12.0",
+    "readline-sync": "^0.4.8",
+    "terminal-menu-program": "0.0.*"
   }
 }
