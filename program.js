@@ -1,8 +1,9 @@
 var builder = require("terminal-menu-program"),
     program = new builder.Program("Webmaker Suite"),
-    componentWork = require("./componentwork");
+    componentWork = require("./componentwork"),
+    requirements = require("./requirements");
 
-require("./mainscreen")(program, "main");
+require("./mainscreen")(program, requirements, "main");
 
 require("./componentscreen")(program, "install", "Install components", function onConfirm(data) {
   program.halt();

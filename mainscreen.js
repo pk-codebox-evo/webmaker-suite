@@ -1,7 +1,6 @@
 var profiles = require("./profile");
-var components = require("./components");
 
-module.exports = function(program, screenName) {
+module.exports = function(program, requirements, screenName) {
   var list = profiles.getProfiles();
   var menu = program.menu(screenName);
 
@@ -10,7 +9,15 @@ module.exports = function(program, screenName) {
 
     menu.text('The Mozilla Webmaker Suite Application Manager v1.0');
     menu.spacer();
-
+    menu.text("Dependency status:");
+    menu.spacer();
+    Object.keys(requirements).forEach(function(req) {
+      var yes = requirements[req].found;
+      menu.text('('+(yes ? 'x' : ' ')+') ' + req + (yes? '':' not') +' installed'+(yes ? '' : '!'));
+    });
+    menu.spacer();
+    menu.text("Webmaker components:");
+    menu.spacer();
     menu.option("Install components", "install");
     menu.option("Synchronise components with Mozilla", "update");
 
@@ -30,9 +37,15 @@ module.exports = function(program, screenName) {
         }
       });
       menu.spacer();
+    } else {
+      menu.spacer();
+      menu.text("No run profiles set up yet..."); 
+      menu.spacer();
     }
 
     menu.option("Create a " + (list.length>0 ? 'new ' : '') + "run profile", "profiles");
+    menu.spacer();
+
     menu.cancel("Exit", function() { program.halt(); process.exit(0); });
 
     if(list.length > 0) { menu.defaultidx = 2; }

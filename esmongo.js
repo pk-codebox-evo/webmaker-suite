@@ -5,7 +5,11 @@ var batchExec = require("./batch").batchExec,
 /**
  * Mongo
  */
-function spawnMongo(callback) {
+function spawnMongo(task, callback) {
+
+  if (task.Dependencies.Mongo !== true) {
+    return callback();
+  }
 
   // ensure we have a data directory for mongo
   if(!fs.existsSync("./mongo")) { fs.mkdirSync("mongo"); }
@@ -32,7 +36,11 @@ function spawnMongo(callback) {
 /**
  * Elastic Search
  */
-function spawnElasticSearch(callback, cleares) {
+function spawnElasticSearch(task, callback, cleares) {
+
+  if (task.Dependencies.Elasticsearch !== true) {
+    return spawnMongo(task, callback);
+  }
 
   var appName = "elasticsearch",
       es;
@@ -54,11 +62,11 @@ function spawnElasticSearch(callback, cleares) {
           ], function () {
             console.log();
             setTimeout(function() {
-              spawnMongo(callback)
+              spawnMongo(task, callback)
             }, 1000);
           });
         }
-        else { spawnMongo(callback); }
+        else { spawnMongo(task, callback); }
       }, 1000);
     }
   });
@@ -68,8 +76,8 @@ function spawnElasticSearch(callback, cleares) {
 };
 
 module.exports = {
-  run: function(callback, cleares) {
+  run: function(task, callback, cleares) {
     cleares = cleares || false;
-    spawnElasticSearch(callback, cleares);
+    spawnElasticSearch(task, callback, cleares);
   }
 }

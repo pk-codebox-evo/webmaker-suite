@@ -8,6 +8,7 @@ module.exports = function(program, screenName, label, onconfirm) {
   menu.spacer();
 
   Object.keys(components).forEach(function(c) {
+    if (c === "Dependencies") return;
     menu.text(c);
     Object.keys(components[c]).forEach(function(k) {
       var exists = fs.existsSync(components[c][k].dir);

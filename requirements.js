@@ -1,26 +1,26 @@
 var requirements = {
-  "java" : {
+  "Java" : {
     url: "https://www.java.com/en/download/index.jsp",
     command: "java"
   },
-  "elasticsearch" : {
+  "Elasticsearch" : {
     url: "http://www.elasticsearch.org/overview/elkdownloads",
-    command: "elasticsearch -f -D es.config=/usr/local/opt/elasticsearch/config/elasticsearch.yml"
+    command: "elasticsearch -f -D es.config=/usr/local/opt/elasticsearch/config/elasticsearch.yml",
+    runnable: true
   },
-  "mongo" : {
+  "Mongo" : {
     url: "http://www.mongodb.org/downloads",
-    command: "mongod"
+    command: "mongod",
+    runnable: true
+  },
+  "Gulp" : {
+    command: "gulp"
   }
 };
+
 if (process.platform == "win32") {
-  requirements.elasticsearch.command = "elasticsearch.bat";
+  requirements.Elasticsearch.command = "elasticsearch.bat";
+  requirements.Gulp.command += ".cmd";
 }
 
-var commands = []
-Object.keys(requirements).forEach(function(key) {
-  commands.push(requirements[key].command);
-});
-
-module.exports = {
-  commands: commands
-};
+module.exports = requirements;

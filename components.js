@@ -1,4 +1,4 @@
-var commandStrings = require("./commandstrings");
+var requirements = require("./requirements");
 
 var components = {
   'Core components' : {
@@ -42,14 +42,17 @@ var components = {
     'Mobile Webmaker' : {
       repo: "https://github.com/mozillafordevelopment/webmaker-app.git",
       env: false,
-      run: "gulp dev"
+      run: "gulp" + (process.platform == "win32" ? ".cmd" : '') +" dev"
     }
   },
   'Additional components': {
     "togetherjs": {
       repo: "https://github.com/mozilla/togetherjs.git",
       env: false,
-      run: [commandStrings.httpserver + " build -p 8811", "node hub/server.js --port 5916 --log-level 3"]
+      run: [
+        "http-server" + (process.platform == "win32" ? ".cmd" : '') + " build -p 8811",
+        "node hub/server.js --port 5916 --log-level 3"
+      ]
     },
     'Events' : {
       repo: "https://github.com/mozilla/webmaker-events-2.git",
@@ -74,5 +77,16 @@ Object.keys(components).forEach(function(cat) {
     component.dir = dir;
   });
 });
+
+var dep = {}
+Object.keys(requirements).forEach(function(req) {
+  var entry = requirements[req];
+  if (entry.runnable) {
+    dep[req] = {
+      run: entry.command
+    };
+  }
+});
+components.Dependencies = dep;
 
 module.exports = components;

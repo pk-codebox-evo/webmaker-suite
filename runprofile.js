@@ -4,16 +4,16 @@ var spawn = require('child_process').spawn;
 
 module.exports = function(profile) {
   console.log("running profile " + profile.getName() + "\n");
+  var task = profile.struct;
 
   var taskrunner = function() {
-    var task = profile.struct;
     Object.keys(task).forEach(function(cat) {
       Object.keys(task[cat]).forEach(function(entry) {
         if(task[cat][entry]) {
           var component = components[cat][entry],
               dir = component.dir;
-
-          console.log("Starting component " + entry);
+          if(!dir) return;
+          console.log("Starting component " + entry + " from " + dir);
           process.chdir(dir);
           var args = component.run.split(' ');
           var child = spawn(args[0], args.slice(1));
@@ -27,7 +27,7 @@ module.exports = function(profile) {
   };
 
   // why is taskrunner sometimes running twice?
-  esmongo.run(function() {
+  esmongo.run(task, function() {
     taskrunner();
     taskrunner = function(){};
   });
