@@ -15,12 +15,16 @@ var requirements = {
   },
   "Gulp" : {
     command: "gulp"
+  },
+  "Grunt" : {
+    command: "grunt"
   }
 };
 
 if (process.platform == "win32") {
   requirements.Elasticsearch.command = "elasticsearch.bat";
   requirements.Gulp.command += ".cmd";
+  requirements.Grunt.command += ".cmd";
 }
 
 module.exports = requirements;

@@ -9,12 +9,14 @@ module.exports = function(program, requirements, screenName) {
 
     menu.text('The Mozilla Webmaker Suite Application Manager v1.0');
     menu.spacer();
-    menu.text("Dependency status:");
+    menu.text("Known dependency status:");
     menu.spacer();
+    var status = [];
     Object.keys(requirements).forEach(function(req) {
       var yes = requirements[req].found;
-      menu.text('('+(yes ? 'x' : ' ')+') ' + req + (yes? '':' not') +' installed'+(yes ? '' : '!'));
+      status.push(req + ": (" + (yes ? '' : "*not ") + "installed)");
     });
+    menu.text("- " + status.join(', '));
     menu.spacer();
     menu.text("Webmaker components:");
     menu.spacer();
@@ -39,7 +41,7 @@ module.exports = function(program, requirements, screenName) {
       menu.spacer();
     } else {
       menu.spacer();
-      menu.text("No run profiles set up yet..."); 
+      menu.text("No run profiles set up yet...");
       menu.spacer();
     }
 
