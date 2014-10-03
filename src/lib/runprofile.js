@@ -1,6 +1,6 @@
-var esmongo = require("./esmongo");
-var components = require("./components");
-var spawn = require('child_process').spawn;
+var esmongo = require("./esmongo"),
+    components = require("../components"),
+    spawn = require('child_process').spawn;
 
 module.exports = function(profile) {
   console.log("running profile " + profile.getName() + "\n");

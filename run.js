@@ -1,5 +1,5 @@
-var requirements = require("./requirements");
-var testFor = require("./testfor");
+var requirements = require("./src/requirements");
+var testFor = require("./src/lib/testfor");
 
 console.log("Verifying all dependencies are met...");
 testFor(requirements, function(err, result) {
@@ -13,5 +13,5 @@ testFor(requirements, function(err, result) {
       return require("./runprofile")(profile);
     }
   }
-  require("./program").run("main");
+  require("./src/program").run("main");
 });

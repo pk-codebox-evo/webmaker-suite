@@ -1,6 +1,6 @@
 module.exports = function(program, screenName) {
-  var components = require("./components");
-  var profiles = require("./profile");
+  var components = require("../components");
+  var profiles = require("../lib/profile");
   var menu = program.menu(screenName);
 
   menu.onLoad = function() {

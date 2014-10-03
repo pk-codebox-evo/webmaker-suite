@@ -1,9 +1,10 @@
-var fs = require("fs-extra");
+var fs = require("fs-extra"),
+    spawn = require('child_process').spawn,
+    exec = require('child_process').exec,
+    readlineSync = require('readline-sync'),
+    commands = require("./commandstrings");
+
 var clear = function() { process.stdout.write("\u001b[2J\u001b[0;0H"); };
-var spawn = require('child_process').spawn;
-var exec = require('child_process').exec;
-var commands = require("./commandstrings");
-var readlineSync = require('readline-sync');
 
 module.exports = function(component, callback) {
 

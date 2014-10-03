@@ -1,4 +1,4 @@
-var components = require("./components");
+var components = require("../components");
 var fs = require("fs-extra");
 
 module.exports = function(program, screenName, label, onconfirm) {

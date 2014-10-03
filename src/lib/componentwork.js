@@ -2,7 +2,7 @@
  * generic function for performing "things" on "components"
  */
 module.exports = function componentWork(data, processor, oncomplete) {
-  var components = require("./components");
+  var components = require("../components");
 
   var found = [];
   Object.keys(data).forEach(function(key) {

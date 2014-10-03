@@ -1,6 +1,6 @@
 var fs = require("fs"),
     pfName = ".profiles",
-    components = require("./components");
+    components = require("../components");
 
 if(!fs.existsSync(pfName)) {
   fs.writeFileSync(pfName, JSON.stringify({profiles:[]}, null, 2));;
