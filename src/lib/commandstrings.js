@@ -26,11 +26,19 @@ var path = require("path");
         return "grunt.cmd";
       }
       return "grunt";
+    }(process, path)),
+    gulpString = (function(p, path) {
+      if (p.platform === "win32") {
+        console.log("Boostrapping 'gulp' command for windows");
+        return "gulp.cmd";
+      }
+      return "gulp";
     }(process, path));
 
 module.exports = {
   npm: npmString,
   grunt: gruntString,
   bower: bowerString,
-  httpserver: httpServerString
+  httpserver: httpServerString,
+  gulp: gulpString
 };

@@ -5,19 +5,22 @@ module.exports = function(program, reqname, requirement) {
   menu.spacer();
 
   if(!requirement.install) {
-    menu.text("This dependency unfortunately cannot be installed automatically.");
-    menu.text("Please download the installer from the following URL and follow the instrutions:");
+    menu.text(reqname + " is not installed, or doesn't have a global alias or PATH entry set up.");
+    menu.spacer();
+    menu.text("This dependency unfortunately cannot be installed automatically. Please download");
+    menu.text("the installer from the following URL and follow the installation instructions:");
     menu.spacer();
     menu.text(requirement.url);
     menu.spacer();
-    menu.text("Alternatively, if your Operating System or your workspace uses its own package");
+    menu.text("Alternatively, if your operating system or your workspace uses its own package");
     menu.text("manager, you can use that to install this particular dependency.");
     menu.spacer();
-    menu.confirm("Done", "main");
+    menu.confirm("Okay", "main");
     return menu;
   }
 
   menu.text("This dependency can be installed automatically.");
+  menu.text("Select \"Instal\" to install it, or cancel to go back to the main menu.");
   menu.spacer();
 
   var args = requirement.install.split(" ");

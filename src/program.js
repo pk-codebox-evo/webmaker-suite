@@ -12,14 +12,14 @@ screens.main(program, requirements, "main");
 
 screens.component(program, "install", "Install components", function onConfirm(data) {
   program.halt();
-  componentWork(data, require("./install"), function() {
+  componentWork(data, require("./lib/install"), function() {
     program.run("main");
   });
 });
 
 screens.component(program, "update", "Sync components to Mozilla's master/develop branches", function onConfirm(data) {
   program.halt();
-  componentWork(data, require("./update"), function() {
+  componentWork(data, require("./lib/update"), function() {
     program.run("main");
   });
 });

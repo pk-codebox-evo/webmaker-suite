@@ -14,11 +14,12 @@ module.exports = function(component, callback) {
   process.chdir(dir);
 
   var git = spawn("git", ["fetch","mozilla"]);
-  console.log("- running npm install");
+  console.log("- running git fetch");
   git.stdout.on('data', function (data) { process.stdout.write(process.stdout.writedata.toString()); });
   git.stderr.on('data', function (data) { process.stderr.write(data.toString()); });
   git.on('close', function (code) {
 
+    console.log("resetting develop and master");
     exec("git checkout -B master mozilla/master");
     exec("git checkout -B develop mozilla/develop");
 
