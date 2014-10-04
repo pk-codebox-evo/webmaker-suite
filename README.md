@@ -136,12 +136,20 @@ If, for some reason, the update process crashes (due to a missing dependency for
 When running the suite, the following locations are available:
 
 * http://localhost:3000 - login.webmaker.org
+ * Expected: Blank page with 'Webmaker SSO server' title
 * http://localhost:3500 - thimble.webmaker.org
+ * Expected: Thimble front page
 * http://localhost:5000 - makeapi
+ * Expected: These are not the droids you are looking for
 * http://localhost:5050 - htmlsanitizer.org
 * http://localhost:7777 - webmaker.org
+ * Expected: Webmaker front page 
 * http://localhost:8888 - popcorn.webmaker.org
+ * Expected: Popcorn front page
 * http://localhost:12416 - goggles.webmaker.org
+ * Expected: goggles front page
+* http://localhost:1981/ - events.webmaker.org
+ * Expected: events front page
 
 # OS-specific information
 
