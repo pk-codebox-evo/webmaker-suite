@@ -55,7 +55,10 @@ module.exports = function(program, requirements, screenName) {
       menu.spacer();
     }());
 
-    menu.cancel("Exit", function() { program.halt(); process.exit(0); });
+    menu.cancel("Exit", function() {
+      program.halt();
+      process.exit(0);
+    });
 
     // if we have run profiles, start off with the "cursor" on the first run profile
     if(list.length > 0) { menu.defaultidx = 3; }
