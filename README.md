@@ -13,8 +13,8 @@ because it will let us improve this package manager based on what you
 need it to do, rather than what we think it should do.
 
 On to business: while not strictly speaking needed for everything, the
-Webmaker core tools require you to have [Java](), [Elasticsearch]() and
-[MongoDB]() installed. They are not required for *all* the projects that
+Webmaker core tools require you to have [Java](https://www.java.com), [Elasticsearch](http://www.elasticsearch.org) and
+[MongoDB](http://www.mongodb.org) installed. They are not required for *all* the projects that
 reside under the Webmaker umbrella, but most tools rely on the `login`
 and `MakeAPI` services, which means you will need these three things
 installed and set up correctly.
@@ -174,7 +174,7 @@ collection as a profile, and then run that profile whenever we like.
 
 ![image](https://cloud.githubusercontent.com/assets/177243/4533668/0f920ab4-4d9e-11e4-9e7d-1fa14da9c51e.png)
 
-For instance, to use [Thimble] we'll need a profile that starts the Core components,
+For instance, to use [Thimble](https://thimble.webmaker.org) we'll need a profile that starts the Core components,
 Thimble, and makes use of the Elasticsearch and Mongo dependencies:
 
 ![image](https://cloud.githubusercontent.com/assets/177243/4533670/1331508a-4d9e-11e4-836c-04fa6282e497.png)
