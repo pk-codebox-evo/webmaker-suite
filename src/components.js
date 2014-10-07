@@ -16,6 +16,11 @@ var components = {
       repo: "https://github.com/mozilla/webmaker.org.git",
       env: "cp env.dist .env",
       run: "node app"
+    },
+    'make-valet' : {
+      repo: "https://github.com/mozilla/make-valet.git",
+      env: "cp env.dist .env",
+      run: "node server"
     }
   },
   'Tools' : {
