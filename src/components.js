@@ -12,15 +12,15 @@ var components = {
       env: "cp env.sample .env",
       run: "node server"
     },
+    'Make Valet' : {
+      repo: "https://github.com/mozilla/make-valet.git",
+      env: "cp env.dist .env",
+      run: "node server"
+    },
     'Webmaker.org' : {
       repo: "https://github.com/mozilla/webmaker.org.git",
       env: "cp env.dist .env",
       run: "node app"
-    },
-    'make-valet' : {
-      repo: "https://github.com/mozilla/make-valet.git",
-      env: "cp env.dist .env",
-      run: "node server"
     }
   },
   'Tools' : {
