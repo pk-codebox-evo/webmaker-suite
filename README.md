@@ -2,7 +2,9 @@
 # This install manager is no longer supported.
 ---
 
-This install manager was during part of in 2014 to manage a set ofMozilla Foundation projects that have been retired or made redundant since, and as such this installer is not maintained or supported anymore either. The repository may be deleted at some unspecified point in the future, and it is not advisable to try to make it work for any of the current Mozilla Foundation software projects.
+This install manager was used during part of 2014 to manage a set of Mozilla Foundation projects that have been retired or made redundant since, and as such this installer is not maintained or supported anymore, either.
+
+This repository may be deleted at some unspecified point in the future, and it is not advisable to try to make it work for any of the current Mozilla Foundation software projects.
 
 ---
 # Legacy README.md text follows
